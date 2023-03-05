@@ -12,3 +12,4 @@ pluginManagement {
 }
 
 include("app")
+include("testing")
