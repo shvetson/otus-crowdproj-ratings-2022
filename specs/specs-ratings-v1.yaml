@@ -1,0 +1,423 @@
+openapi: 3.0.4
+info:
+  title: Ratings
+  description: |
+    Crowd project - Ratings
+  contact:
+    email: shvetson@gmail.com
+  license:
+    name: Apache 2.0
+    url: https://www.apache.org/licenses/LICENSE-2.0.html
+  version: 1.0.11
+servers:
+  - url: https://localhost/api/v1
+tags:
+  - name: rating
+    description: Управление рейтингами
+paths:
+  /ratings/create:
+    post:
+      tags:
+        - rating
+      summary: Create rating
+      operationId: ratingCreate
+      requestBody:
+        description: Request Body
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/RatingCreateRequest'
+        required: true
+      responses:
+        200:
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RatingCreateResponse'
+  /ratings/read:
+    post:
+      tags:
+        - rating
+      summary: Read rating
+      operationId: ratingRead
+      requestBody:
+        description: Request Body
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/RatingReadRequest'
+        required: true
+      responses:
+        200:
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RatingReadResponse'
+  /ratings/update:
+    post:
+      tags:
+        - rating
+      summary: Update rating
+      operationId: ratingUpdate
+      requestBody:
+        description: Request Body
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/RatingUpdateRequest'
+        required: true
+      responses:
+        200:
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RatingUpdateResponse'
+  /ratings/delete:
+    post:
+      tags:
+        - rating
+      summary: Delete rating
+      operationId: ratingDelete
+      requestBody:
+        description: Request Body
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/RatingDeleteRequest'
+        required: true
+      responses:
+        200:
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RatingDeleteResponse'
+  /ratings/search:
+    post:
+      tags:
+        - rating
+      summary: Search rating
+      operationId: ratingSearch
+      requestBody:
+        description: Request Body
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/RatingSearchRequest'
+        required: true
+      responses:
+        200:
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RatingSearchResponse'
+
+components:
+  schemas:
+
+    IRequest:
+      type: object
+      description: Базовый интерфейс для всех запросов
+      properties:
+        requestType:
+          type: string
+          description: Поле-дискриминатор для вычисления типа запроса
+          example: create
+        requestId:
+          type: string
+          description: Идентификатор запроса для отладки
+      discriminator:
+        propertyName: requestType
+        mapping:
+          create: '#/components/schemas/RatingCreateRequest'
+          read: '#/components/schemas/RatingReadRequest'
+          update: '#/components/schemas/RatingUpdateRequest'
+          delete: '#/components/schemas/RatingDeleteRequest'
+          search: '#/components/schemas/RatingSearchRequest'
+
+    Error:
+      type: object
+      properties:
+        code:
+          type: string
+        group:
+          type: string
+        field:
+          type: string
+        message:
+          type: string
+
+    ResponseResult:
+      type: string
+      enum:
+        - success
+        - error
+
+    IResponse:
+      type: object
+      description: Базовый интерфейс для всех ответов
+      properties:
+        responseType:
+          type: string
+          description: Поле-дискриминатор для вычисления типа запроса
+          example: create
+        requestId:
+          type: string
+          description: Идентификатор запроса для отладки
+        result:
+          $ref: '#/components/schemas/ResponseResult'
+        errors:
+          type: array
+          items:
+            $ref: '#/components/schemas/Error'
+      discriminator:
+        propertyName: responseType
+        mapping:
+          create: '#/components/schemas/RatingCreateResponse'
+          read:   '#/components/schemas/RatingReadResponse'
+          update: '#/components/schemas/RatingUpdateResponse'
+          delete: '#/components/schemas/RatingDeleteResponse'
+          search: '#/components/schemas/RatingSearchResponse'
+          init: '#/components/schemas/RatingInitResponse'
+
+    ObjectId:
+      type: string
+      description: Идентификатор объекта рейтингования
+      example: "12"
+
+    RatingId:
+      type: string
+      description: Идентификатор рейтинга
+      example: "34"
+
+    RatingLock:
+      type: string
+      description: Версия оптимистичной блокировки
+
+    BaseRating:
+      type: object
+      description: Объект описывает свойства, одинаковые для create и update
+      properties:
+        score:
+          type: number
+          format: double
+          description: Оценка (рейтинг)
+          example: 4.5
+        voteCount:
+          type: integer
+          description: Количество голосов
+          example: 123
+        scoreType:
+          $ref: '#/components/schemas/ScoreType'
+        objectType:
+          $ref: '#/components/schemas/ObjectType'
+
+    ScoreType:
+      type: string
+      description: 'Вид (тип) оценки'
+      example: 'Качество обслуживания'
+      enum:
+        - onTime
+        - inFull
+        - quality
+
+    ObjectType:
+      type: string
+      description: 'Вид (тип) объекта'
+      example: ''
+      enum:
+        - ad
+        - comment
+        - productModel
+
+    RatingInitResponse:
+      allOf:
+        - $ref: '#/components/schemas/IResponse'
+
+    RatingCreateObject:
+      allOf:
+        - $ref: '#/components/schemas/BaseRating'
+
+    RatingCreateRequest:
+      allOf:
+        - $ref: '#/components/schemas/IRequest'
+        - $ref: '#/components/schemas/RatingRequestDebug'
+        - type: object
+          properties:
+            rating:
+              $ref: '#/components/schemas/RatingCreateObject'
+
+    RatingReadObject:
+      allOf:
+        - type: object
+          properties:
+            id:
+              $ref: '#/components/schemas/RatingId'
+
+    RatingReadRequest:
+      allOf:
+        - $ref: '#/components/schemas/IRequest'
+        - $ref: '#/components/schemas/RatingRequestDebug'
+        - type: object
+          properties:
+            rating:
+              $ref: '#/components/schemas/RatingReadObject'
+
+    RatingUpdateObject:
+      allOf:
+        - $ref: '#/components/schemas/BaseRating'
+        - type: object
+          properties:
+            id:
+              $ref: '#/components/schemas/RatingId'
+            objectId:
+              $ref: '#/components/schemas/ObjectId'
+
+    RatingUpdateRequest:
+      allOf:
+        - $ref: '#/components/schemas/IRequest'
+        - $ref: '#/components/schemas/RatingRequestDebug'
+        - type: object
+          properties:
+            rating:
+              $ref: '#/components/schemas/RatingUpdateObject'
+
+    RatingDeleteObject:
+      allOf:
+        - type: object
+          properties:
+            id:
+              $ref: '#/components/schemas/RatingId'
+
+    RatingDeleteRequest:
+      allOf:
+        - $ref: '#/components/schemas/IRequest'
+        - $ref: '#/components/schemas/RatingRequestDebug'
+        - type: object
+          properties:
+            rating:
+              $ref: '#/components/schemas/RatingDeleteObject'
+
+    RatingSearchFilter:
+      type: object
+      description: Набор фильтров для поиска
+      properties:
+        searchString:
+          type: string
+          description: Поисковая строка, которая будет искаться в объявлениях
+
+    RatingSearchRequest:
+      allOf:
+        - $ref: '#/components/schemas/IRequest'
+        - $ref: '#/components/schemas/RatingRequestDebug'
+        - type: object
+          properties:
+            ratingFilter:
+              $ref: '#/components/schemas/RatingSearchFilter'
+
+    RatingResponseObject:
+      allOf:
+        - $ref: '#/components/schemas/BaseRating'
+        - type: object
+          description: Объект, который возвращается в ответе бэкенда
+          properties:
+            id:
+              $ref: '#/components/schemas/RatingId'
+            objectId:
+              $ref: '#/components/schemas/ObjectId'
+            permissions:
+              type: array
+              uniqueItems: true
+              items:
+                $ref: '#/components/schemas/RatingPermissions'
+
+    RatingPermissions:
+      type: string
+      description: Доступы для клиента для операций над объявлением
+      enum:
+        - read
+        - update
+        - delete
+        - makeVisiblePublic
+        - makeVisibleOwn
+        - makeVisibleGroup
+
+    RatingResponseSingle:
+      allOf:
+        - type: object
+          description: Ответ с одним объектом объявления
+          properties:
+            rating:
+              $ref: '#/components/schemas/RatingResponseObject'
+
+    RatingResponseMulti:
+      allOf:
+        - type: object
+          description: Список найденных объектов
+          properties:
+            ratings:
+              type: array
+              items:
+                $ref: '#/components/schemas/RatingResponseObject'
+
+    RatingCreateResponse:
+      allOf:
+        - $ref: '#/components/schemas/IResponse'
+        - $ref: '#/components/schemas/RatingResponseSingle'
+
+    RatingReadResponse:
+      allOf:
+        - $ref: '#/components/schemas/IResponse'
+        - $ref: '#/components/schemas/RatingResponseSingle'
+
+    RatingUpdateResponse:
+      allOf:
+        - $ref: '#/components/schemas/IResponse'
+        - $ref: '#/components/schemas/RatingResponseSingle'
+
+    RatingDeleteResponse:
+      allOf:
+        - $ref: '#/components/schemas/IResponse'
+        - $ref: '#/components/schemas/RatingResponseSingle'
+
+    RatingSearchResponse:
+      allOf:
+        - $ref: '#/components/schemas/IResponse'
+        - $ref: '#/components/schemas/RatingResponseMulti'
+
+    # STUBS ======================
+    RatingRequestDebugMode:
+      type: string
+      enum:
+        - prod
+        - test
+        - stub
+
+    RatingRequestDebugStubs:
+      type: string
+      description: Перечисления всех стабов
+      enum:
+        - success
+        - notFound
+        - badId
+        - badObjectId
+        - cannotDelete
+        - badSearchString
+
+    RatingDebug:
+      type: object
+      properties:
+        mode:
+          $ref: '#/components/schemas/RatingRequestDebugMode'
+        stub:
+          $ref: '#/components/schemas/RatingRequestDebugStubs'
+
+    RatingRequestDebug:
+      type: object
+      properties:
+        debug:
+          $ref: '#/components/schemas/RatingDebug'
