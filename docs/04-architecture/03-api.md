@@ -13,4 +13,4 @@
 7. updatedAt - дата и время обновления записи (данных)
 8. ownerId - владелец (автор) рейтинга
 
-![Схема модели](imgs/ratings_model.png)
+![Схема модели](imgs/model_ratings.png)
