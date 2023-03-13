@@ -4,7 +4,8 @@ plugins {
     kotlin("jvm")
 }
 
-group = "com.crowdproj.marketplace:ratings"
+group = "com.crowdproj.marketplace.ratings"
+//group = "otus-crowdproj-ratings-2022"
 version = "0.0.1"
 
 allprojects {
