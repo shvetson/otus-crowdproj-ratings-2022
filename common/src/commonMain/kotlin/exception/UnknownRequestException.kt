@@ -1,4 +1,4 @@
-package exception
+package com.crowdproj.rating.common.exception
 
 import kotlin.reflect.KClass
 

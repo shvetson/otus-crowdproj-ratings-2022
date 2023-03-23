@@ -1,6 +1,6 @@
-package exception
+package com.crowdproj.rating.common.exception
 
-import models.MkplCommand
+import com.crowdproj.rating.common.model.CwpRatCommand
 
 /**
  * @author  Oleg Shvets
@@ -8,4 +8,4 @@ import models.MkplCommand
  * @date  13.03.2023 18:29
  */
 
-class UnknownCommandException(cmd: MkplCommand): RuntimeException("Command $cmd can't be mapped and not supported.")
+class UnknownCommandException(cmd: CwpRatCommand): RuntimeException("Command $cmd can't be mapped and not supported.")

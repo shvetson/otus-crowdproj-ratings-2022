@@ -1,4 +1,5 @@
-import com.fasterxml.jackson.databind.DeserializationFeature
+package com.crowdproj.rating.api
+
 import com.fasterxml.jackson.databind.ObjectMapper
 
 /**
@@ -7,6 +8,4 @@ import com.fasterxml.jackson.databind.ObjectMapper
  * @date  21.02.2023 10:17
  */
 
-val apiV1Mapper = ObjectMapper().apply {
-    configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false)
-}
+val apiV1Mapper = ObjectMapper()

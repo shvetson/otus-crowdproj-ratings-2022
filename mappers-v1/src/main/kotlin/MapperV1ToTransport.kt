@@ -1,13 +1,12 @@
-/**
- * @author  Oleg Shvets
- * @version 1.0
- * @date  13.03.2023 18:27
- */
+package com.crowdproj.rating.mappers
 
-import com.crowdproj.marketplace.ratings.api.v1.models.*
-import exception.UnknownCommandException
+import com.crowdproj.rating.api.v1.models.*
+import com.crowdproj.rating.common.CwpRatContext
+import com.crowdproj.rating.common.NONE
+import com.crowdproj.rating.common.exception.UnknownCommandException
+import com.crowdproj.rating.common.model.*
 import kotlinx.datetime.Instant
-import models.*
+import kotlin.Error
 
 /**
  * @author  Oleg Shvets
@@ -16,109 +15,102 @@ import models.*
  */
 
 // #1
-fun MkplContext.toTransport(): IResponse = when (command) {
-    MkplCommand.CREATE -> toTransportCreate()
-    MkplCommand.READ -> toTransportRead()
-    MkplCommand.UPDATE -> toTransportUpdate()
-    MkplCommand.DELETE -> toTransportDelete()
-    MkplCommand.SEARCH -> toTransportSearch()
+fun CwpRatContext.toTransport(): IResponse = when (command) {
+    CwpRatCommand.CREATE -> toTransportCreate()
+    CwpRatCommand.READ -> toTransportRead()
+    CwpRatCommand.UPDATE -> toTransportUpdate()
+    CwpRatCommand.DELETE -> toTransportDelete()
+    CwpRatCommand.SEARCH -> toTransportSearch()
     else -> throw UnknownCommandException(command)
 }
 
 // #2
-fun MkplContext.toTransportCreate() = RatingCreateResponse(
+fun CwpRatContext.toTransportCreate() = RatingCreateResponse(
     requestId = requestId.asString().takeIf { it.isNotBlank() },
-    result = if (state == MkplState.RUNNING) ResponseResult.SUCCESS else ResponseResult.ERROR,
+    result = if (state == CwpRatState.RUNNING) ResponseResult.SUCCESS else ResponseResult.ERROR,
     errors = errors.toTransportErrors(),
     rating = ratingResponse.toTransportRating()
 )
 
 // #9
-fun MkplContext.toTransportRead() = RatingReadResponse(
+fun CwpRatContext.toTransportRead() = RatingReadResponse(
     requestId = requestId.asString().takeIf { it.isNotBlank() },
-    result = if (state == MkplState.RUNNING) ResponseResult.SUCCESS else ResponseResult.ERROR,
+    result = if (state == CwpRatState.RUNNING) ResponseResult.SUCCESS else ResponseResult.ERROR,
     errors = errors.toTransportErrors(),
     rating = ratingResponse.toTransportRating()
 )
 
 // #10
-fun MkplContext.toTransportUpdate() = RatingUpdateResponse(
+fun CwpRatContext.toTransportUpdate() = RatingUpdateResponse(
     requestId = requestId.asString().takeIf { it.isNotBlank() },
-    result = if (state == MkplState.RUNNING) ResponseResult.SUCCESS else ResponseResult.ERROR,
+    result = if (state == CwpRatState.RUNNING) ResponseResult.SUCCESS else ResponseResult.ERROR,
     errors = errors.toTransportErrors(),
     rating = ratingResponse.toTransportRating()
 )
 
 // #11
-fun MkplContext.toTransportDelete() = RatingDeleteResponse(
+fun CwpRatContext.toTransportDelete() = RatingDeleteResponse(
     requestId = requestId.asString().takeIf { it.isNotBlank() },
-    result = if (state == MkplState.RUNNING) ResponseResult.SUCCESS else ResponseResult.ERROR,
+    result = if (state == CwpRatState.RUNNING) ResponseResult.SUCCESS else ResponseResult.ERROR,
     errors = errors.toTransportErrors(),
     rating = ratingResponse.toTransportRating()
 )
 
 // #12
-fun MkplContext.toTransportSearch() = RatingSearchResponse(
+fun CwpRatContext.toTransportSearch() = RatingSearchResponse(
     requestId = requestId.asString().takeIf { it.isNotBlank() },
-    result = if (state == MkplState.RUNNING) ResponseResult.SUCCESS else ResponseResult.ERROR,
+    result = if (state == CwpRatState.RUNNING) ResponseResult.SUCCESS else ResponseResult.ERROR,
     errors = errors.toTransportErrors(),
     ratings = ratingsResponse.toTransportRating()
 )
 
 // #13
-fun List<MkplRating>.toTransportRating(): List<RatingResponseObject>? = this
+fun List<CwpRat>.toTransportRating(): List<RatingResponseObject>? = this
     .map { it.toTransportRating() }
     .toList()
     .takeIf { it.isNotEmpty() }
 
 // #3
-fun MutableList<MkplError>.toTransportErrors() = this
+fun MutableList<CwpRatError>.toTransportErrors() = this
     .map { it.toTransportError() }
     .toList()
     .takeIf { it.isNotEmpty() }
 
 // #4
-fun MkplError.toTransportError() = Error(
+fun CwpRatError.toTransportError() = Error(
     code = code.takeIf { it.isNotBlank() },
     group = group.takeIf { it.isNotBlank() },
     field = field.takeIf { it.isNotBlank() },
-    message = message.takeIf { it.isNotBlank() },
+    title = title.takeIf { it.isNotBlank() },
+    description = description.takeIf { it.isNotBlank() },
 )
 
 // #5
-fun MkplRating.toTransportRating() = RatingResponseObject(
-    id = id.takeIf { it != MkplRatingId.NONE }?.asString(),
-    typeId = typeId.takeIf { it != MkplScoreTypeId.NONE }?.asString(),
-    objectId = objectId.takeIf { it != MkplObjectId.NONE }?.asString(),
-    objectType = objectType.toTransportRating(),
+fun CwpRat.toTransportRating() = RatingResponseObject(
+    id = id.takeIf { it != CwpRatId.NONE }?.asString(),
+    scoreTypeId = scoreTypeId.takeIf { it != CwpRatScoreTypeId.NONE }?.asString(),
+    objectId = objectId.takeIf { it != CwpRatObjectId.NONE }?.asString(),
+    objectTypeId = objectTypeId.takeIf { it != CwpRatObjectTypeId.NONE }?.asString(),
     score = score,
     voteCount = voteCount,
     createdAt = createdAt.takeIf { it != Instant.NONE }.toString(),
     updatedAt = updatedAt.takeIf { it != Instant.NONE }.toString(),
-    ownerId = ownerId.takeIf { it != MkplUserId.NONE }?.asString(),
+    ownerId = ownerId.takeIf { it != CwpRatUserId.NONE }?.asString(),
     permissions = permissions.toTransportPermissions()
 )
 
-// #6
-fun MkplObjectType.toTransportRating() = when (this) {
-    MkplObjectType.AD -> ObjectType.AD
-    MkplObjectType.COMMENT -> ObjectType.COMMENT
-    MkplObjectType.PRODUCT -> ObjectType.PRODUCT
-    MkplObjectType.NONE -> null
-}
-
 // #7
-fun MutableList<MkplPermission>.toTransportPermissions() = this
+fun MutableList<CwpRatPermission>.toTransportPermissions() = this
     .map { it.toTransportPermissions() }
     .toSet()
     .takeIf { it.isNotEmpty() }
 
 // #8
-fun MkplPermission.toTransportPermissions() = when (this) {
-    MkplPermission.READ -> RatingPermissions.READ
-    MkplPermission.UPDATE -> RatingPermissions.UPDATE
-    MkplPermission.DELETE -> RatingPermissions.DELETE
-    MkplPermission.MAKE_VISIBLE_PUBLIC -> RatingPermissions.MAKE_VISIBLE_PUBLIC
-    MkplPermission.MAKE_VISIBLE_TO_GROUP -> RatingPermissions.MAKE_VISIBLE_GROUP
-    MkplPermission.MAKE_VISIBLE_TO_OWNER -> RatingPermissions.MAKE_VISIBLE_OWN
+fun CwpRatPermission.toTransportPermissions() = when (this) {
+    CwpRatPermission.READ -> RatingPermissions.READ
+    CwpRatPermission.UPDATE -> RatingPermissions.UPDATE
+    CwpRatPermission.DELETE -> RatingPermissions.DELETE
+    CwpRatPermission.MAKE_VISIBLE_PUBLIC -> RatingPermissions.MAKE_VISIBLE_PUBLIC
+    CwpRatPermission.MAKE_VISIBLE_TO_GROUP -> RatingPermissions.MAKE_VISIBLE_GROUP
+    CwpRatPermission.MAKE_VISIBLE_TO_OWNER -> RatingPermissions.MAKE_VISIBLE_OWN
 }

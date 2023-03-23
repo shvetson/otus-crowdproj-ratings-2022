@@ -1,21 +1,12 @@
-# https://github.com/github/gitignore/blob/main/Gradle.gitignore
-
 .gitattributes
 
 /build/
 **/build/
-!src/**/build/
-
-# Ignore Gradle files
-/.gradle/
-/gradle/
-gradle-app.setting
-gradlew
-gradlew.bat
+!**/src/**/build/
 
 # Avoid ignoring Gradle files
-!gradle-wrapper.jar
-!gradle-wrapper.properties
+gradle/wrapper/gradle-wrapper.jar
+gradle/wrapper/gradle-wrapper.properties
 
 # Cache of project
 .gradletasknamecache
@@ -54,9 +45,3 @@ gradlew.bat
 
 # virtual machine crash logs, see http://www.java.com/en/download/help/error_hotspot.xml
 hs_err_pid*
-
-# Ignore Gradle project-specific cache directory
-.gradle
-
-# Ignore Gradle build output directory
-build

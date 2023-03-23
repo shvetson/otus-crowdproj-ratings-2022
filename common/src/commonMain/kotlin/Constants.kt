@@ -1,3 +1,5 @@
+package com.crowdproj.rating.common
+
 import kotlinx.datetime.Instant
 
 /**

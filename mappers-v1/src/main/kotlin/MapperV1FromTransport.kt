@@ -1,7 +1,9 @@
-import com.crowdproj.marketplace.ratings.api.v1.models.*
-import exception.UnknownRequestException
-import kotlinx.datetime.Instant
-import models.*
+package com.crowdproj.rating.mappers
+
+import com.crowdproj.rating.api.v1.models.*
+import com.crowdproj.rating.common.CwpRatContext
+import com.crowdproj.rating.common.exception.UnknownRequestException
+import com.crowdproj.rating.common.model.*
 
 /**
  * @author  Oleg Shvets
@@ -10,7 +12,7 @@ import models.*
  */
 
 // #1
-fun MkplContext.fromTransport(request: IRequest) = when (request) {
+fun CwpRatContext.fromTransport(request: IRequest) = when (request) {
     is RatingCreateRequest -> fromTransport(request)
     is RatingReadRequest -> fromTransport(request)
     is RatingUpdateRequest -> fromTransport(request)
@@ -20,115 +22,98 @@ fun MkplContext.fromTransport(request: IRequest) = when (request) {
 }
 
 // #3
-fun IRequest?.requestId() = this?.requestId?.let { MkplRequestId(it) } ?: MkplRequestId.NONE
+fun IRequest?.requestId() = this?.requestId?.let { CwpRatRequestId(it) } ?: CwpRatRequestId.NONE
 
 // #5
-fun String?.toRatingId() = this?.let { MkplRatingId(it) } ?: MkplRatingId.NONE
-fun String?.toTypeId() = this?.let { MkplScoreTypeId(it) } ?: MkplScoreTypeId.NONE
-fun String?.toObjectId() = this?.let { MkplObjectId(it) } ?: MkplObjectId.NONE
-fun String?.toUserId() = this?.let { MkplUserId(it) } ?: MkplUserId.NONE
+fun String?.toRatingId() = this?.let { CwpRatId(it) } ?: CwpRatId.NONE
+fun String?.toScoreTypeId() = this?.let { CwpRatScoreTypeId(it) } ?: CwpRatScoreTypeId.NONE
+fun String?.toObjectTypeId() = this?.let { CwpRatObjectTypeId(it) } ?: CwpRatObjectTypeId.NONE
 
-// #10
-fun String?.toRatingWithId() = MkplRating(id = this.toRatingId())
+// #
+fun String?.toObjectId() = this?.let { CwpRatObjectId(it) } ?: CwpRatObjectId.NONE
+
+// #9
+fun String?.toRatingWithId() = CwpRat(id = this.toRatingId())
+
+// #6
+fun RatingDebug?.transportToWorkMode() = when (this?.mode) {
+    RatingRequestDebugMode.PROD -> CwpRatWorkMode.PROD
+    RatingRequestDebugMode.STUB -> CwpRatWorkMode.STUB
+    RatingRequestDebugMode.TEST -> CwpRatWorkMode.TEST
+    null -> CwpRatWorkMode.PROD
+}
+
+// #7
+fun RatingDebug?.transportToStubCase() = when (this?.stub) {
+    RatingRequestDebugStubs.SUCCESS -> CwpRatStub.SUCCESS
+    RatingRequestDebugStubs.NOT_FOUND -> CwpRatStub.NOT_FOUND
+    RatingRequestDebugStubs.BAD_ID -> CwpRatStub.BAD_ID
+    null -> CwpRatStub.NONE
+}
 
 // #4
-fun RatingCreateObject.toInternal() = MkplRating(
-    typeId = this.typeId.toTypeId(),
-    objectId = this.objectId.toObjectId(),
-    objectType = this.objectType.fromTransport(),
-    score = this.score ?: "",
-    voteCount = this.voteCount ?: "",
-    createdAt = (this.createdAt ?: Instant.NONE) as Instant,
-    updatedAt = (this.updatedAt ?: Instant.NONE) as Instant,
-    ownerId = this.ownerId.toUserId(),
+fun RatingCreateObject.toInternal() = CwpRat(
+    scoreTypeId = this.scoreTypeId.toScoreTypeId(), // -> #5
+    objectId = this.objectId.toObjectId(), // -> #5
+    objectTypeId = this.objectTypeId.toObjectTypeId(), // -> #5
 )
 
 // #14
-fun RatingUpdateObject.toInternal() = MkplRating(
+fun RatingUpdateObject.toInternal() = CwpRat(
     id = this.id.toRatingId(),
-    typeId = this.typeId.toTypeId(),
-    objectId = this.objectId.toObjectId(),
-    objectType = this.objectType.fromTransport(),
+    scoreTypeId = this.scoreTypeId.toScoreTypeId(),
+    objectId = this.objectId.toObjectId(), // -> #
+    objectTypeId = this.objectTypeId.toObjectTypeId(),
     score = this.score ?: "",
     voteCount = this.voteCount ?: "",
-    createdAt = (this.createdAt ?: Instant.NONE) as Instant,
-    updatedAt = (this.updatedAt ?: Instant.NONE) as Instant,
-    ownerId = this.ownerId.toUserId(),
 )
 
 // #15
-fun RatingSearchFilter?.toInternal() = MkplRatingFilter(
+fun RatingSearchFilter?.toInternal() = CwpRatFilter(
     searchString = this?.searchString ?: ""
 )
 
-// #7
-fun RatingDebug?.transportToWorkMode() = when (this?.mode) {
-    RatingRequestDebugMode.PROD -> MkplWorkMode.PROD
-    RatingRequestDebugMode.STUB -> MkplWorkMode.STUB
-    RatingRequestDebugMode.TEST -> MkplWorkMode.TEST
-    null -> MkplWorkMode.PROD
-}
-
-// #8
-fun RatingDebug?.transportToStubCase() = when (this?.stub) {
-    RatingRequestDebugStubs.SUCCESS -> MkplStub.SUCCESS
-    RatingRequestDebugStubs.NOT_FOUND -> MkplStub.NOT_FOUND
-    RatingRequestDebugStubs.BAD_ID -> MkplStub.BAD_ID
-    RatingRequestDebugStubs.BAD_OBJECT_ID -> MkplStub.BAD_OBJECT_ID
-    RatingRequestDebugStubs.CANNOT_DELETE -> MkplStub.CANNOT_DELETE
-    RatingRequestDebugStubs.BAD_SEARCH_STRING -> MkplStub.BAD_SEARCH_STRING
-    null -> MkplStub.NONE
-}
-
 // #2
-fun MkplContext.fromTransport(request: RatingCreateRequest) {
-    command = MkplCommand.CREATE
-    requestId = request.requestId()
-    ratingRequest = request.rating?.toInternal() ?: MkplRating()
-    workMode = request.debug.transportToWorkMode()
-    stubCase = request.debug.transportToStubCase()
+fun CwpRatContext.fromTransport(request: RatingCreateRequest) {
+    command = CwpRatCommand.CREATE
+    requestId = request.requestId() // -> #3
+    ratingRequest = request.rating?.toInternal() ?: CwpRat() // -> #4
+    workMode = request.debug.transportToWorkMode() // -> #6
+    stubCase = request.debug.transportToStubCase() // -> #7
 }
 
 // #11
-fun MkplContext.fromTransport(request: RatingReadRequest) {
-    command = MkplCommand.READ
+fun CwpRatContext.fromTransport(request: RatingReadRequest) {
+    command = CwpRatCommand.READ
     requestId = request.requestId()
-    ratingRequest = request.rating?.id.toRatingWithId()
+    ratingRequest = request.rating?.id.toRatingWithId() // -> #9
     workMode = request.debug.transportToWorkMode()
     stubCase = request.debug.transportToStubCase()
 }
 
 // #12
-fun MkplContext.fromTransport(request: RatingUpdateRequest) {
-    command = MkplCommand.UPDATE
+fun CwpRatContext.fromTransport(request: RatingUpdateRequest) {
+    command = CwpRatCommand.UPDATE
     requestId = request.requestId()
-    ratingRequest = request.rating?.toInternal() ?: MkplRating()
+    ratingRequest = request.rating?.toInternal() ?: CwpRat()
     workMode = request.debug.transportToWorkMode()
     stubCase = request.debug.transportToStubCase()
 }
 
-// #9
-fun MkplContext.fromTransport(request: RatingDeleteRequest) {
-    command = MkplCommand.DELETE
+// #8
+fun CwpRatContext.fromTransport(request: RatingDeleteRequest) {
+    command = CwpRatCommand.DELETE
     requestId = request.requestId()
-    ratingRequest = request.rating?.id.toRatingWithId() // когда rating приходит не как объект, а как id
+    ratingRequest = request.rating?.id.toRatingWithId() // -> #9 (когда rating приходит не как объект, а как id)
     workMode = request.debug.transportToWorkMode()
     stubCase = request.debug.transportToStubCase()
 }
 
 // #14
-fun MkplContext.fromTransport(request: RatingSearchRequest) {
-    command = MkplCommand.SEARCH
+fun CwpRatContext.fromTransport(request: RatingSearchRequest) {
+    command = CwpRatCommand.SEARCH
     requestId = request.requestId()
     ratingFilterRequest = request.ratingFilter.toInternal()
     workMode = request.debug.transportToWorkMode()
     stubCase = request.debug.transportToStubCase()
-}
-
-// #6
-fun ObjectType?.fromTransport() = when (this) {
-    ObjectType.AD -> MkplObjectType.AD
-    ObjectType.COMMENT -> MkplObjectType.COMMENT
-    ObjectType.PRODUCT -> MkplObjectType.PRODUCT
-    null -> MkplObjectType.NONE
 }

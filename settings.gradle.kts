@@ -1,5 +1,5 @@
 //rootProject.name = "otus-crowdproj-ratings-2022"
-rootProject.name = "com.crowdproj.marketplace.ratings"
+rootProject.name = "ratings"
 
 pluginManagement {
     val kotlinVersion: String by settings
@@ -18,7 +18,6 @@ pluginManagement {
     }
 }
 
-include("app")
 include("api-v1")
 include("common")
 include("mappers-v1")
