@@ -4,8 +4,10 @@ plugins {
     kotlin("jvm")
 }
 
-group = "com.crowdproj.marketplace:ratings"
+group = "com.crowdproj.rating"
 version = "0.0.1"
+
+val JVM_TARGET = "11"
 
 allprojects {
     repositories{
@@ -20,11 +22,11 @@ subprojects {
     group = rootProject.group
     version = rootProject.version
 
-    repositories {
-        mavenCentral()
+    tasks.withType<KotlinCompile> {
+        kotlinOptions.jvmTarget = JVM_TARGET
     }
 
-    tasks.withType<KotlinCompile> {
-        kotlinOptions.jvmTarget = "11"
+    tasks.withType<org.jetbrains.kotlin.gradle.tasks.KotlinJvmCompile> {
+        kotlinOptions.jvmTarget = JVM_TARGET
     }
 }
