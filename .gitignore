@@ -1,3 +1,29 @@
+.gitattributes
+
+/build/
+**/build/
+!**/src/**/build/
+
+.gradle
+
+# Avoid ignoring Gradle files
+gradle/wrapper/gradle-wrapper.jar
+gradle/wrapper/gradle-wrapper.properties
+
+# Cache of project
+.gradletasknamecache
+
+# Ignore Idea files
+/.idea/
+
+**/yarn.lock
+
+# ignores all .md files
+# .md
+
+# does not ignore the README.md file
+# !README.md
+
 # Compiled class file
 *.class
 
