@@ -25,35 +25,35 @@ internal class RatingsControllerTest {
 
     @Test
     fun createRating() = testStubRating(
-        "/v1/ratings/create",
+        "/api/v1/ratings/create",
         RatingCreateRequest(),
         CwpRatingContext().apply { ratingResponse = CwpRatingStub.get() }.toTransportCreate()
     )
 
     @Test
     fun readRating() = testStubRating(
-        "/v1/ratings/read",
+        "/api/v1/ratings/read",
         RatingReadRequest(),
         CwpRatingContext().apply { ratingResponse = CwpRatingStub.get() }.toTransportRead()
     )
 
     @Test
     fun updateRating() = testStubRating(
-        "/v1/ratings/update",
+        "/api/v1/ratings/update",
         RatingUpdateRequest(),
         CwpRatingContext().apply { ratingResponse = CwpRatingStub.get() }.toTransportUpdate()
     )
 
     @Test
     fun deleteRating() = testStubRating(
-        "/v1/ratings/delete",
+        "/api/v1/ratings/delete",
         RatingDeleteRequest(),
         CwpRatingContext().toTransportDelete()
     )
 
     @Test
     fun searchRating() = testStubRating(
-        "/v1/ratings/search",
+        "/api/v1/ratings/search",
         RatingSearchRequest(),
         CwpRatingContext().apply { ratingsResponse.add(CwpRatingStub.get()) }.toTransportSearch()
     )

@@ -7,7 +7,7 @@ import com.crowdproj.rating.stubs.CwpRatingStub
 import org.springframework.web.bind.annotation.*
 
 @RestController
-@RequestMapping("/v1/ratings")
+@RequestMapping("/api/v1/ratings")
 class RatingsController {
 
     @PostMapping("/create")
@@ -26,7 +26,7 @@ class RatingsController {
         return context.toTransportRead()
     }
 
-    @RequestMapping("/update", method = [RequestMethod.POST])
+    @PostMapping("/update")
     fun updateRat(@RequestBody request: RatingUpdateRequest): RatingUpdateResponse {
         val context = CwpRatingContext()
         context.fromTransport(request)

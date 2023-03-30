@@ -10,7 +10,7 @@ info:
     url: https://www.apache.org/licenses/LICENSE-2.0.html
   version: 1.0.0
 servers:
-  - url: http://localhost:8080/v1
+  - url: http://localhost:8080/api/v1
     description: App Server
 tags:
   - name: rating
@@ -191,7 +191,7 @@ components:
     RatingId: # Can be referenced as '#/components/schemas/RatingId'
       type: string
       description: A rating ID
-      example: "314"
+      example: "111"
 
     UserId: # Can be referenced as '#/components/schemas/UserId'
       $ref: './base.yaml#/components/schemas/UserId'
@@ -199,7 +199,7 @@ components:
     ScoreTypeId: # Can be referenced as '#/components/schemas/ScoreTypeId'
       type: string
       description: A score type ID
-      example: "112"
+      example: "1"
 
     RatingLock: # Can be referenced as '#/components/schemas/RatingLock'
       type: string
@@ -218,11 +218,11 @@ components:
         score:
           type: string
           description: A rating score
-          example: "4.5"
+          example: "3.5"
         voteCount:
           type: string
           description: A votes count
-          example: "123"
+          example: "200"
         createdAt:
           type: string
           format: date-time
