@@ -22,17 +22,17 @@ repositories {
 }
 
 application {
-//    mainClass.set("io.ktor.server.cio.EngineMain")
+    mainClass.set("io.ktor.server.cio.EngineMain")
 //    mainClass.set("io.ktor.server.netty.EngineMain")
-    mainClass.set("com.crowdproj.rating.ktor.ApplicationKt")
+//    mainClass.set("com.crowdproj.rating.ktor.ApplicationKt")
 }
 
 dependencies {
     implementation(kotlin("stdlib-common"))
     implementation("io.ktor:ktor-server-core:$ktorVersion")
 
-//    implementation("io.ktor:ktor-server-cio:$ktorVersion")
-    implementation("io.ktor:ktor-server-netty:$ktorVersion")
+    implementation("io.ktor:ktor-server-cio:$ktorVersion")
+//    implementation("io.ktor:ktor-server-netty:$ktorVersion")
 
     implementation("io.ktor:ktor-server-content-negotiation:$ktorVersion")
 

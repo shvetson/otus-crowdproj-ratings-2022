@@ -37,7 +37,7 @@ kotlin {
                 implementation("io.kotest:kotest-framework-datatest:$kotestVersion")
                 implementation("io.kotest:kotest-assertions-core:$kotestVersion")
                 implementation("io.kotest:kotest-property:$kotestVersion")
-                implementation("io.kotest:kotest-property-datetime:5.0.0.M4")
+                implementation("io.kotest:kotest-property-datetime:$kotestVersion")
             }
         }
         val jsMain by getting {

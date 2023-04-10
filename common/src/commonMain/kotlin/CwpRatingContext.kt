@@ -11,7 +11,7 @@ import kotlinx.datetime.Instant
 
 data class CwpRatingContext(
     var command: CwpRatingCommand = CwpRatingCommand.NONE,
-    var state: CwpRatingState = CwpRatingState.RUNNING,
+    var state: CwpRatingState = CwpRatingState.NONE,
     var errors: MutableList<CwpRatingError> = mutableListOf(),
 
     var workMode: CwpRatingWorkMode = CwpRatingWorkMode.PROD,

@@ -1,4 +1,4 @@
-package domain
+package com.crowdproj.rating.testing.domain
 
 /**
  * @author  Oleg Shvets

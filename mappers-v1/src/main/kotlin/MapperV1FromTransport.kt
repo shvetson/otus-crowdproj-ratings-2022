@@ -74,7 +74,7 @@ fun RatingSearchFilter?.toInternal() = CwpRatingFilter(
 // #2
 fun CwpRatingContext.fromTransport(request: RatingCreateRequest) {
     command = CwpRatingCommand.CREATE
-    state = CwpRatingState.RUNNING
+    state = CwpRatingState.NONE
     requestId = request.requestId() // -> #3
     ratingRequest = request.rating?.toInternal() ?: CwpRating() // -> #4
     workMode = request.debug.transportToWorkMode() // -> #6
@@ -84,7 +84,7 @@ fun CwpRatingContext.fromTransport(request: RatingCreateRequest) {
 // #11
 fun CwpRatingContext.fromTransport(request: RatingReadRequest) {
     command = CwpRatingCommand.READ
-    state = CwpRatingState.RUNNING
+    state = CwpRatingState.NONE
     requestId = request.requestId()
     ratingRequest = request.rating?.id.toRatingWithId() // -> #9
     workMode = request.debug.transportToWorkMode()
@@ -94,7 +94,7 @@ fun CwpRatingContext.fromTransport(request: RatingReadRequest) {
 // #12
 fun CwpRatingContext.fromTransport(request: RatingUpdateRequest) {
     command = CwpRatingCommand.UPDATE
-    state = CwpRatingState.RUNNING
+    state = CwpRatingState.NONE
     requestId = request.requestId()
     ratingRequest = request.rating?.toInternal() ?: CwpRating()
     workMode = request.debug.transportToWorkMode()
@@ -104,7 +104,7 @@ fun CwpRatingContext.fromTransport(request: RatingUpdateRequest) {
 // #8
 fun CwpRatingContext.fromTransport(request: RatingDeleteRequest) {
     command = CwpRatingCommand.DELETE
-    state = CwpRatingState.RUNNING
+    state = CwpRatingState.NONE
     requestId = request.requestId()
     ratingRequest = request.rating?.id.toRatingWithId() // -> #9 (когда rating приходит не как объект, а как id)
     workMode = request.debug.transportToWorkMode()
@@ -114,7 +114,7 @@ fun CwpRatingContext.fromTransport(request: RatingDeleteRequest) {
 // #14
 fun CwpRatingContext.fromTransport(request: RatingSearchRequest) {
     command = CwpRatingCommand.SEARCH
-    state = CwpRatingState.RUNNING
+    state = CwpRatingState.NONE
     requestId = request.requestId()
     ratingFilterRequest = request.ratingFilter.toInternal()
     workMode = request.debug.transportToWorkMode()

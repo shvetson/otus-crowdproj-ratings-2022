@@ -1,4 +1,4 @@
-package domain
+package com.crowdproj.rating.testing.domain
 
 class RatingObj(
     var nameObjectForRating: String

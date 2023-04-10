@@ -1,6 +1,6 @@
-package repository
+package com.crowdproj.rating.testing.repository
 
-import domain.RatingScore
+import com.crowdproj.rating.testing.domain.RatingScore
 
 /**
  * @author  Oleg Shvets
