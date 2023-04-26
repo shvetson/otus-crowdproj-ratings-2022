@@ -1,6 +1,6 @@
-package port
+package com.crowdproj.rating.testing.port
 
-import domain.RatingScore
+import com.crowdproj.rating.testing.domain.RatingScore
 
 /**
  * @author  Oleg Shvets

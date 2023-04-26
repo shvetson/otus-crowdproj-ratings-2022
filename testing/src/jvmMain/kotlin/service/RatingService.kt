@@ -1,10 +1,10 @@
-package service
+package com.crowdproj.rating.testing.service
 
-import domain.RatingObj
-import domain.RatingScore
-import port.CreateRating
-import port.CrudsRating
-import repository.RatingRepository
+import com.crowdproj.rating.testing.domain.RatingObj
+import com.crowdproj.rating.testing.domain.RatingScore
+import com.crowdproj.rating.testing.port.CreateRating
+import com.crowdproj.rating.testing.port.CrudsRating
+import com.crowdproj.rating.testing.repository.RatingRepository
 
 /**
  * @author  Oleg Shvets
