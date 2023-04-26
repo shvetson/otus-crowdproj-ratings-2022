@@ -1,6 +1,8 @@
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
+import org.jetbrains.kotlin.gradle.tasks.KotlinJvmCompile
 
 plugins {
+    kotlin("multiplatform") apply false
     kotlin("jvm")
 }
 
@@ -26,7 +28,7 @@ subprojects {
         kotlinOptions.jvmTarget = JVM_TARGET
     }
 
-    tasks.withType<org.jetbrains.kotlin.gradle.tasks.KotlinJvmCompile> {
+    tasks.withType<KotlinJvmCompile> {
         kotlinOptions.jvmTarget = JVM_TARGET
     }
 }
