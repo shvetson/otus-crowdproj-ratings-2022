@@ -4,6 +4,7 @@ import com.crowdproj.rating.api.v1.models.*
 import com.crowdproj.rating.common.CwpRatingContext
 import com.crowdproj.rating.common.exception.UnknownRequestException
 import com.crowdproj.rating.common.model.*
+import com.crowdproj.rating.common.stub.CwpRatingStub
 
 /**
  * @author  Oleg Shvets

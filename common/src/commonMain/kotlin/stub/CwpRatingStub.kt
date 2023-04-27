@@ -1,4 +1,4 @@
-package com.crowdproj.rating.common.model
+package com.crowdproj.rating.common.stub
 
 /**
  * @author  Oleg Shvets

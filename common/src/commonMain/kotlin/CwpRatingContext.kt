@@ -1,6 +1,7 @@
 package com.crowdproj.rating.common
 
 import com.crowdproj.rating.common.model.*
+import com.crowdproj.rating.common.stub.CwpRatingStub
 import kotlinx.datetime.Instant
 
 /**

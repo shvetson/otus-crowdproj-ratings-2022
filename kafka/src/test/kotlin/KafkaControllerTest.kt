@@ -35,7 +35,7 @@ class KafkaControllerTest {
                         RatingCreateRequest(
                             requestId = "11111111-1111-1111-1111-111111111111",
                             rating = RatingCreateObject(
-                                scoreTypeId = "1",
+                                scoreTypeId = "11",
                                 objectId = "100",
                                 objectTypeId = "10",
                             ),

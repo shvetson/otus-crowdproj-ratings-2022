@@ -4,6 +4,7 @@ import com.crowdproj.rating.api.v1.models.*
 import com.crowdproj.rating.common.CwpRatingContext
 import com.crowdproj.rating.common.NONE
 import com.crowdproj.rating.common.model.*
+import com.crowdproj.rating.common.stub.CwpRatingStub
 import kotlinx.datetime.Instant
 import org.junit.Test
 import kotlin.test.assertEquals
