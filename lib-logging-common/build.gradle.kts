@@ -2,6 +2,9 @@ plugins {
     kotlin("multiplatform")
 }
 
+group = rootProject.group
+version = rootProject.version
+
 kotlin {
     jvm {}
     macosX64 {}
@@ -9,17 +12,18 @@ kotlin {
 
     sourceSets {
         val coroutinesVersion: String by project
-
-        all { languageSettings.optIn("kotlin.RequiresOptIn") }
+        val datetimeVersion: String by project
+        val logbackVersion: String by project
+        val logbackEncoderVersion: String by project
+        val kermitLoggerVersion: String by project
 
         @Suppress("UNUSED_VARIABLE")
         val commonMain by getting {
             dependencies {
                 implementation(kotlin("stdlib-common"))
-
-                implementation(project(":common"))
-                implementation(project(":stubs"))
-                implementation(project(":lib-cor"))
+                implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:$coroutinesVersion")
+                implementation("co.touchlab:kermit:$kermitLoggerVersion")
+                api("org.jetbrains.kotlinx:kotlinx-datetime:$datetimeVersion")
             }
         }
         @Suppress("UNUSED_VARIABLE")
@@ -27,14 +31,16 @@ kotlin {
             dependencies {
                 implementation(kotlin("test-common"))
                 implementation(kotlin("test-annotations-common"))
-
-                api("org.jetbrains.kotlinx:kotlinx-coroutines-test:$coroutinesVersion")
             }
         }
         @Suppress("UNUSED_VARIABLE")
         val jvmMain by getting {
             dependencies {
                 implementation(kotlin("stdlib-jdk8"))
+
+                // logback
+                implementation("net.logstash.logback:logstash-logback-encoder:$logbackEncoderVersion")
+                api("ch.qos.logback:logback-classic:$logbackVersion")
             }
         }
         @Suppress("UNUSED_VARIABLE")

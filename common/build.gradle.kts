@@ -17,6 +17,7 @@ kotlin {
             dependencies {
                 implementation(kotlin("stdlib-common"))
                 implementation("org.jetbrains.kotlinx:kotlinx-datetime:$datetimeVersion")
+                implementation(project(":lib-logging-common"))
 
                 api("org.jetbrains.kotlinx:kotlinx-datetime:$datetimeVersion")
             }

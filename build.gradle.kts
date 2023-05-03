@@ -3,13 +3,13 @@ import org.jetbrains.kotlin.gradle.tasks.KotlinJvmCompile
 
 plugins {
     kotlin("multiplatform") apply false
-    kotlin("jvm")
+    kotlin("jvm") apply false
 }
 
 group = "com.crowdproj.rating"
 version = "0.0.1"
 
-val JVM_TARGET = "11"
+val javaVersion: String by project
 
 allprojects {
     repositories{
@@ -25,10 +25,10 @@ subprojects {
     version = rootProject.version
 
     tasks.withType<KotlinCompile> {
-        kotlinOptions.jvmTarget = JVM_TARGET
+        kotlinOptions.jvmTarget = javaVersion
     }
 
     tasks.withType<KotlinJvmCompile> {
-        kotlinOptions.jvmTarget = JVM_TARGET
+        kotlinOptions.jvmTarget = javaVersion
     }
 }

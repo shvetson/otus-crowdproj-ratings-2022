@@ -47,7 +47,7 @@ pluginManagement {
     }
 }
 
-include("testing")
+//include("testing")
 include("api-v1")
 include("common")
 include("mappers-v1")
@@ -58,3 +58,4 @@ include("biz")
 include("kafka")
 include("rabbit")
 include("lib-cor")
+include("lib-logging-common")
