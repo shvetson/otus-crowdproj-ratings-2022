@@ -6,7 +6,7 @@ package com.crowdproj.rating.common.stub
  * @date  13.03.2023 12:36
  */
 
-enum class CwpRatingStub {
+enum class CwpRatingStubs {
     NONE,
     SUCCESS,
     NOT_FOUND,

@@ -4,7 +4,7 @@ import com.crowdproj.rating.api.v1.models.*
 import com.crowdproj.rating.common.CwpRatingContext
 import com.crowdproj.rating.common.exception.UnknownRequestException
 import com.crowdproj.rating.common.model.*
-import com.crowdproj.rating.common.stub.CwpRatingStub
+import com.crowdproj.rating.common.stub.CwpRatingStubs
 
 /**
  * @author  Oleg Shvets
@@ -46,10 +46,10 @@ fun RatingDebug?.transportToWorkMode() = when (this?.mode) {
 
 // #7
 fun RatingDebug?.transportToStubCase() = when (this?.stub) {
-    RatingRequestDebugStubs.SUCCESS -> CwpRatingStub.SUCCESS
-    RatingRequestDebugStubs.NOT_FOUND -> CwpRatingStub.NOT_FOUND
-    RatingRequestDebugStubs.BAD_ID -> CwpRatingStub.BAD_ID
-    null -> CwpRatingStub.NONE
+    RatingRequestDebugStubs.SUCCESS -> CwpRatingStubs.SUCCESS
+    RatingRequestDebugStubs.NOT_FOUND -> CwpRatingStubs.NOT_FOUND
+    RatingRequestDebugStubs.BAD_ID -> CwpRatingStubs.BAD_ID
+    null -> CwpRatingStubs.NONE
 }
 
 // #4

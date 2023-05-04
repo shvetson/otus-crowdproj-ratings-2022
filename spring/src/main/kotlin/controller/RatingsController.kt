@@ -2,50 +2,55 @@ package com.crowdproj.rating.spring.controller
 
 import com.crowdproj.rating.api.v1.models.*
 import com.crowdproj.rating.common.CwpRatingContext
+import com.crowdproj.rating.common.CwpRatingCorSettings
 import com.crowdproj.rating.mappers.*
-import com.crowdproj.rating.stubs.CwpRatingStub
+import com.crowdproj.rating.spring.service.CwpRatingBlockingProcessor
 import org.springframework.web.bind.annotation.*
 
 @RestController
 @RequestMapping("/api/v1/ratings")
-class RatingsController {
+class RatingsController(
+    val corSettings: CwpRatingCorSettings,
+    private val processor: CwpRatingBlockingProcessor
+) {
 
     @PostMapping("/create")
-    fun createRat(@RequestBody request: RatingCreateRequest): RatingCreateResponse {
-        val context = CwpRatingContext()
-        context.fromTransport(request)
-        context.ratingResponse = CwpRatingStub.get()
-        return context.toTransportCreate()
+    fun createRating(@RequestBody request: RatingCreateRequest): RatingCreateResponse {
+        val ctx = CwpRatingContext()
+        ctx.fromTransport(request)
+        processor.exec(ctx)
+        return ctx.toTransportCreate()
     }
 
     @PostMapping("/read")
-    fun readRat(@RequestBody request: RatingReadRequest): RatingReadResponse {
-        val context = CwpRatingContext()
-        context.fromTransport(request)
-        context.ratingResponse = CwpRatingStub.get()
-        return context.toTransportRead()
+    fun readRating(@RequestBody request: RatingReadRequest): RatingReadResponse {
+        val ctx = CwpRatingContext()
+        ctx.fromTransport(request)
+        processor.exec(ctx)
+        return ctx.toTransportRead()
     }
 
     @PostMapping("/update")
-    fun updateRat(@RequestBody request: RatingUpdateRequest): RatingUpdateResponse {
-        val context = CwpRatingContext()
-        context.fromTransport(request)
-        context.ratingResponse = CwpRatingStub.get()
-        return context.toTransportUpdate()
+    fun updateRating(@RequestBody request: RatingUpdateRequest): RatingUpdateResponse {
+        val ctx = CwpRatingContext()
+        ctx.fromTransport(request)
+        processor.exec(ctx)
+        return ctx.toTransportUpdate()
     }
 
     @PostMapping("/delete")
-    fun deleteRat(@RequestBody request: RatingDeleteRequest): RatingDeleteResponse {
-        val context = CwpRatingContext()
-        context.fromTransport(request)
-        return context.toTransportDelete()
+    fun deleteRating(@RequestBody request: RatingDeleteRequest): RatingDeleteResponse {
+        val ctx = CwpRatingContext()
+        ctx.fromTransport(request)
+        processor.exec(ctx)
+        return ctx.toTransportDelete()
     }
 
     @PostMapping("/search")
-    fun searchRat(@RequestBody request: RatingSearchRequest): RatingSearchResponse {
-        val context = CwpRatingContext()
-        context.fromTransport(request)
-        context.ratingsResponse.add(CwpRatingStub.get())
-        return context.toTransportSearch()
+    fun searchRating(@RequestBody request: RatingSearchRequest): RatingSearchResponse {
+        val ctx = CwpRatingContext()
+        ctx.fromTransport(request)
+        processor.exec(ctx)
+        return ctx.toTransportSearch()
     }
 }

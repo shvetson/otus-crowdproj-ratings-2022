@@ -10,10 +10,10 @@ import io.ktor.server.response.*
 
 suspend fun ApplicationCall.createRating() {
     val request = receive<RatingCreateRequest>()
-    val context = CwpRatingContext()
-    context.fromTransport(request)
-    context.ratingResponse = CwpRatingStub.get()
-    respond(context.toTransportCreate())
+    val ctx = CwpRatingContext()
+    ctx.fromTransport(request)
+//    process(ctx)
+    respond(ctx.toTransportCreate())
 }
 
 suspend fun ApplicationCall.readRating() {

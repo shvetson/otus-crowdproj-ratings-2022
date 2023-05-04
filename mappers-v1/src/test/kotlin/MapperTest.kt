@@ -4,7 +4,7 @@ import com.crowdproj.rating.api.v1.models.*
 import com.crowdproj.rating.common.CwpRatingContext
 import com.crowdproj.rating.common.NONE
 import com.crowdproj.rating.common.model.*
-import com.crowdproj.rating.common.stub.CwpRatingStub
+import com.crowdproj.rating.common.stub.CwpRatingStubs
 import kotlinx.datetime.Instant
 import org.junit.Test
 import kotlin.test.assertEquals
@@ -28,7 +28,7 @@ class MapperTest {
         val context = CwpRatingContext()
         context.fromTransport(req)
 
-        assertEquals(CwpRatingStub.SUCCESS, context.stubCase)
+        assertEquals(CwpRatingStubs.SUCCESS, context.stubCase)
         assertEquals(CwpRatingWorkMode.STUB, context.workMode)
 
         assertEquals("11", context.ratingRequest.scoreTypeId.asString())

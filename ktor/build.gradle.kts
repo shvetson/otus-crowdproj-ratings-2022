@@ -57,6 +57,11 @@ dependencies {
     implementation(project(":api-v1"))
     implementation(project(":mappers-v1"))
     implementation(project(":stubs"))
+
+    implementation(project(":biz"))
+    implementation(project(":lib-logging-common"))
+    implementation(project(":lib-logging-logback"))
+
 }
 
 //tasks {

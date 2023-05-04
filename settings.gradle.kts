@@ -59,3 +59,5 @@ include("kafka")
 include("rabbit")
 include("lib-cor")
 include("lib-logging-common")
+include("lib-logging-logback")
+

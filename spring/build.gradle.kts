@@ -32,8 +32,11 @@ dependencies {
     implementation(project(":api-v1"))
     implementation(project(":mappers-v1"))
 
-    // Stubs
+    // stubs
     implementation(project(":stubs"))
+
+    //biz
+    implementation(project(":biz"))
 
     // tests
     testImplementation("org.springframework.boot:spring-boot-starter-test")
