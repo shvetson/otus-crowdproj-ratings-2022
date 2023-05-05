@@ -2,10 +2,13 @@ package com.crowdproj.rating.biz
 
 import com.crowdproj.rating.biz.group.operation
 import com.crowdproj.rating.biz.group.stubs
+import com.crowdproj.rating.biz.validation.finishRatingValidation
+import com.crowdproj.rating.biz.validation.validation
 import com.crowdproj.rating.biz.worker.*
 import com.crowdproj.rating.common.CwpRatingContext
 import com.crowdproj.rating.common.model.CwpRatingCommand
 import com.crowdproj.rating.cor.rootChain
+import com.crowdproj.rating.cor.worker
 
 class CwpRatingProcessor {
     suspend fun exec(ctx: CwpRatingContext) = BusinessChain.exec(ctx)
@@ -22,18 +25,17 @@ class CwpRatingProcessor {
                     stubDbError("Имитация ошибки работы с БД")
                     stubNoCase("Ошибка: запрошенный стаб недопустим")
                 }
-//                validation {
-//                    worker("Копируем поля в adValidating") { adValidating = adRequest.deepCopy() }
-//                    worker("Очистка id") { adValidating.id = MkplAdId.NONE }
-//                    worker("Очистка заголовка") { adValidating.title = adValidating.title.trim() }
-//                    worker("Очистка описания") { adValidating.description = adValidating.description.trim() }
-//                    validateTitleNotEmpty("Проверка, что заголовок не пуст")
-//                    validateTitleHasContent("Проверка символов")
-//                    validateDescriptionNotEmpty("Проверка, что описание не пусто")
-//                    validateDescriptionHasContent("Проверка символов")
-//
-//                    finishAdValidation("Завершение проверок")
-//                }
+                validation {
+                    worker("Копируем поля в adValidating") { adValidating = adRequest.deepCopy() }
+                    worker("Очистка id") { adValidating.id = MkplAdId.NONE }
+                    worker("Очистка заголовка") { adValidating.title = adValidating.title.trim() }
+                    worker("Очистка описания") { adValidating.description = adValidating.description.trim() }
+                    validateTitleNotEmpty("Проверка, что заголовок не пуст")
+                    validateTitleHasContent("Проверка символов")
+                    validateDescriptionNotEmpty("Проверка, что описание не пусто")
+                    validateDescriptionHasContent("Проверка символов")
+                    finishRatingValidation("Завершение проверок")
+                }
             }
 
             operation("Получить рейтинг", CwpRatingCommand.READ) {

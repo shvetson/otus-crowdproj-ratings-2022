@@ -12,4 +12,4 @@ fun Application.initAppSettings(): CwpRatingAppSettings = CwpRatingAppSettings(
     processor = CwpRatingProcessor(),
 )
 
-expect fun Application.getLoggerProviderConf(): CwpLoggerProvider
+//expect fun Application.getLoggerProviderConf(): CwpLoggerProvider

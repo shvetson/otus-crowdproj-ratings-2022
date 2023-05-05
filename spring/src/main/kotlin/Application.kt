@@ -7,8 +7,5 @@ import org.springframework.boot.runApplication
 class Application
 
 fun main(args: Array<String>) {
-    val ctx = runApplication<Application>(*args)
-    println("""
-        count = ${ctx.beanDefinitionCount}
-    """.trimIndent())
+    runApplication<Application>(*args)
 }

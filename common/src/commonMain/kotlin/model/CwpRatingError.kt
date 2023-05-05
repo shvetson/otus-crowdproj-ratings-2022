@@ -13,4 +13,10 @@ data class CwpRatingError(
     var title: String = "",
     var description: String = "",
     var exception: Throwable? = null,
-)
+    val level: Level = Level.ERROR,
+    ) {
+    @Suppress("unused")
+    enum class Level {
+        TRACE, DEBUG, INFO, WARN, ERROR
+    }
+}

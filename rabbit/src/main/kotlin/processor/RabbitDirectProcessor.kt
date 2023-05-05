@@ -23,19 +23,19 @@ class RabbitDirectProcessorV1(
     private val processor: CwpRatingProcessor = CwpRatingProcessor(),
 ) : RabbitProcessorBase(config, processorConfig) {
 
-    private val context = CwpRatingContext()
+    private val ctx = CwpRatingContext()
 
     override suspend fun Channel.processMessage(message: Delivery) {
-        context.apply {
+        ctx.apply {
             timeStart = Clock.System.now()
         }
 
         apiV1Mapper.readValue(message.body, IRequest::class.java).run {
-            context.fromTransport(this).also {
+            ctx.fromTransport(this).also {
                 println("TYPE: ${this::class.simpleName}")
             }
         }
-        val response = processor.exec(context).run { context.toTransport() }
+        val response = processor.exec(ctx).run { ctx.toTransport() }
         apiV1Mapper.writeValueAsBytes(response).also {
             println("Publishing $response to ${processorConfig.exchange} exchange for keyOut ${processorConfig.keyOut}")
             basicPublish(processorConfig.exchange, processorConfig.keyOut, null, it)
@@ -46,9 +46,9 @@ class RabbitDirectProcessorV1(
 
     override fun Channel.onError(e: Throwable) {
         e.printStackTrace()
-        context.state = CwpRatingState.NONE
-        context.addError(error = arrayOf(e.asCwpRatingError()))
-        val response = context.toTransport()
+        ctx.state = CwpRatingState.NONE
+        ctx.addError(error = arrayOf(e.asCwpRatingError()))
+        val response = ctx.toTransport()
         apiV1Mapper.writeValueAsBytes(response).also {
             basicPublish(processorConfig.exchange, processorConfig.keyOut, null, it)
         }

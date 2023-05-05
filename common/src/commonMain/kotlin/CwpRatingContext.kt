@@ -27,4 +27,10 @@ data class CwpRatingContext(
 
     var ratingResponse: CwpRating = CwpRating(),
     var ratingsResponse: MutableList<CwpRating> = mutableListOf(),
+
+    var ratingValidating: CwpRating = CwpRating(),
+    var ratingFilterValidating: CwpRatingFilter = CwpRatingFilter(),
+
+    var ratingValidated: CwpRating = CwpRating(),
+    var ratingFilterValidated: CwpRatingFilter = CwpRatingFilter(),
 )

@@ -1,4 +1,4 @@
-package com.crowdproj.rating.spring.service
+package com.crowdproj.rating.spring
 
 import com.crowdproj.rating.biz.CwpRatingProcessor
 import com.crowdproj.rating.common.CwpRatingContext

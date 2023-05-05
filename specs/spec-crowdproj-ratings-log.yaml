@@ -21,15 +21,15 @@ components:
           type: string
         source:
           type: string
-        ad:
-          $ref: '#/components/schemas/MkplLogModel'
+        rating:
+          $ref: '#/components/schemas/CwpLogModel'
         errors:
           type: array
           items:
             $ref: '#/components/schemas/ErrorLogModel'
 
-    MkplLogModel:
-      title: Модель лога для микросервиса Marketplace
+    CwpLogModel:
+      title: Модель лога для микросервиса
       type: object
       properties:
         requestId:
@@ -42,48 +42,50 @@ components:
             - update
             - delete
             - search
-            - offers
-        requestAd:
-          $ref: '#/components/schemas/AdLog'
+        requestRating:
+          $ref: '#/components/schemas/RatingLog'
         requestFilter:
-          $ref: '#/components/schemas/AdFilterLog'
-        responseAd:
-          $ref: '#/components/schemas/AdLog'
-        responseAds:
+          $ref: '#/components/schemas/RatingFilterLog'
+        responseRating:
+          $ref: '#/components/schemas/RatingLog'
+        responseRatings:
           type: array
           items:
-            $ref: '#/components/schemas/AdLog'
+            $ref: '#/components/schemas/RatingLog'
 
     ErrorLogModel:
       title: Модель лога для ошибки
       type: object
       properties:
-        message:
-          type: string
-        field:
-          type: string
         code:
           type: string
-        level:
+          description: "Some specific code to identify an error for programming handling purposes"
+        group:
           type: string
+          description: "An optional group id to segment different errors"
+        field:
+          type: string
+          description: "An optional field the error relates to"
+        title:
+          type: string
+          description: "A short explanation of the error to show as a tooltip or hint, for example"
+        description:
+          type: string
+          description: "A full description of the error with a complete information"
 
-    AdLog:
-      title: Модель лога для объявления
+    RatingLog:
+      title: Модель лога для рейтинга
       type: object
       properties:
         id:
           type: string
-        title:
+        scoreTypeId:
           type: string
-        description:
+        objectId:
           type: string
-        adType:
-          type: string
-        visibility:
-          type: string
+        objectTypeId:
+            type: string
         ownerId:
-          type: string
-        productId:
           type: string
         permissions:
           type: array
@@ -91,13 +93,10 @@ components:
           items:
             type: string
 
-    AdFilterLog:
+    RatingFilterLog:
       title: Модель лога фильтра
       properties:
         searchString:
           type: string
         ownerId:
           type: string
-        dealSide:
-          type: string
-

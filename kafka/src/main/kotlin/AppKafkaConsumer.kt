@@ -39,7 +39,7 @@ class AppKafkaConsumer(
     private val consumer: Consumer<String, String> = config.createKafkaConsumer(),
     private val producer: Producer<String, String> = config.createKafkaProducer(),
 ) {
-    private val process = atomic(true) // пояснить
+    private val process = atomic(true)
     private val topicsAndStrategyByInputTopic = consumerStrategies.associate {
         val topics = it.topics(config)
         Pair(

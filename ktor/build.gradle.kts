@@ -4,6 +4,11 @@ val serializationVersion: String by project
 val ktorPluginVersion: String by project
 val kotlinVersion: String by project
 
+fun ktorServer(module: String, version: String? = this@Build_gradle.ktorVersion): Any =
+    "io.ktor:ktor-server-$module:$version"
+fun ktorClient(module: String, version: String? = this@Build_gradle.ktorVersion): Any =
+    "io.ktor:ktor-client-$module:$version"
+
 plugins {
     id("application")
     kotlin("jvm")
@@ -61,7 +66,8 @@ dependencies {
     implementation(project(":biz"))
     implementation(project(":lib-logging-common"))
     implementation(project(":lib-logging-logback"))
-
+    implementation(project(":mappers-log"))
+    implementation(project(":api-log"))
 }
 
 //tasks {

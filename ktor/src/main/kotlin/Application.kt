@@ -21,10 +21,9 @@ fun main(args: Array<String>): Unit =
 private val clazz = Application::module::class.qualifiedName ?: "Application"
 @Suppress("unused")
 fun Application.module(appSettings: CwpRatingAppSettings = initAppSettings()) {
-    module(appSettings)
+//    module(appSettings)
 
     configureSerialization()
     configureRouting(appSettings)
     configureCallLogging(appSettings, clazz)
-
 }

@@ -21,4 +21,8 @@ data class CwpRating(
     var updatedAt: Instant = Instant.NONE,
     var ownerId: CwpRatingUserId = CwpRatingUserId.NONE,
     var permissions: MutableList<CwpRatingPermission> = mutableListOf(),
-)
+) {
+    fun deepCopy(): CwpRating = copy(
+        permissions = permissions.toMutableList(),
+    )
+}
