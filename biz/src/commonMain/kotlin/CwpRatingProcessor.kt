@@ -2,11 +2,10 @@ package com.crowdproj.rating.biz
 
 import com.crowdproj.rating.biz.group.operation
 import com.crowdproj.rating.biz.group.stubs
-import com.crowdproj.rating.biz.validation.finishRatingValidation
-import com.crowdproj.rating.biz.validation.validation
+import com.crowdproj.rating.biz.validation.*
 import com.crowdproj.rating.biz.worker.*
 import com.crowdproj.rating.common.CwpRatingContext
-import com.crowdproj.rating.common.model.CwpRatingCommand
+import com.crowdproj.rating.common.model.*
 import com.crowdproj.rating.cor.rootChain
 import com.crowdproj.rating.cor.worker
 
@@ -26,14 +25,21 @@ class CwpRatingProcessor {
                     stubNoCase("Ошибка: запрошенный стаб недопустим")
                 }
                 validation {
-                    worker("Копируем поля в adValidating") { adValidating = adRequest.deepCopy() }
-                    worker("Очистка id") { adValidating.id = MkplAdId.NONE }
-                    worker("Очистка заголовка") { adValidating.title = adValidating.title.trim() }
-                    worker("Очистка описания") { adValidating.description = adValidating.description.trim() }
-                    validateTitleNotEmpty("Проверка, что заголовок не пуст")
-                    validateTitleHasContent("Проверка символов")
-                    validateDescriptionNotEmpty("Проверка, что описание не пусто")
-                    validateDescriptionHasContent("Проверка символов")
+                    worker("Копируем поля в ratingValidating") { ratingValidating = ratingRequest.deepCopy() }
+
+                    worker("Очистка поля id рейтинга") { ratingValidating.id = CwpRatingId.NONE }
+                    worker("Очистка поля тип рейтинга") { ratingValidating.scoreTypeId = CwpRatingScoreTypeId(ratingValidating.scoreTypeId.asString().trim()) }
+                    worker("Очистка поля объект рейтинга") { ratingValidating.objectId = CwpRatingObjectId(ratingValidating.objectId.asString().trim()) }
+                    worker("Очистка поля тип объекта рейтинга") { ratingValidating.objectTypeId = CwpRatingObjectTypeId(ratingValidating.objectTypeId.asString().trim()) }
+
+                    validateScoreTypeIdNotEmpty("Проверка, что поле тип рейтинга не пустое")
+                    validateObjectIdNotEmpty("Проверка, что поле объект рейтинга не пустое")
+                    validateObjectTypeIdNotEmpty("Проверка, что поле тип объекта рейтинга не пустое")
+
+                    validateScoreTypeIdProperFormat("Проверка формата поля тип рейтинга")
+                    validateObjectIdProperFormat("Проверка формата поля объект рейтинга")
+                    validateObjectTypeIdProperFormat("Проверка формата поля тип объекта рейтинга")
+
                     finishRatingValidation("Завершение проверок")
                 }
             }
@@ -45,14 +51,15 @@ class CwpRatingProcessor {
                     stubDbError("Имитация ошибки работы с БД")
                     stubNoCase("Ошибка: запрошенный стаб недопустим")
                 }
-//                validation {
-//                    worker("Копируем поля в adValidating") { adValidating = adRequest.deepCopy() }
-//                    worker("Очистка id") { adValidating.id = MkplAdId(adValidating.id.asString().trim()) }
-//                    validateIdNotEmpty("Проверка на непустой id")
-//                    validateIdProperFormat("Проверка формата id")
-//
-//                    finishAdValidation("Успешное завершение процедуры валидации")
-//                }
+                validation {
+                    worker("Копируем поля в ratingValidating") { ratingValidating = ratingRequest.deepCopy() }
+
+                    worker("Очистка поля id рейтинга") { ratingValidating.id = CwpRatingId(ratingValidating.id.asString().trim()) }
+                    validateIdNotEmpty("Проверка, что поле id рейтинга не пустое")
+                    validateIdProperFormat("Проверка формата поля id рейтинга")
+
+                    finishRatingValidation("Завершение проверок")
+                }
 //                computeAdState("Вычисление состояния рейтинга")
             }
 
@@ -65,20 +72,26 @@ class CwpRatingProcessor {
                     stubDbError("Имитация ошибки работы с БД")
                     stubNoCase("Ошибка: запрошенный стаб недопустим")
                 }
-//                validation {
-//                    worker("Копируем поля в adValidating") { adValidating = adRequest.deepCopy() }
-//                    worker("Очистка id") { adValidating.id = MkplAdId(adValidating.id.asString().trim()) }
-//                    worker("Очистка заголовка") { adValidating.title = adValidating.title.trim() }
-//                    worker("Очистка описания") { adValidating.description = adValidating.description.trim() }
-//                    validateIdNotEmpty("Проверка на непустой id")
-//                    validateIdProperFormat("Проверка формата id")
-//                    validateTitleNotEmpty("Проверка на непустой заголовок")
-//                    validateTitleHasContent("Проверка на наличие содержания в заголовке")
-//                    validateDescriptionNotEmpty("Проверка на непустое описание")
-//                    validateDescriptionHasContent("Проверка на наличие содержания в описании")
-//
-//                    finishAdValidation("Успешное завершение процедуры валидации")
-//                }
+                validation {
+                    worker("Копируем поля в ratingValidating") { ratingValidating = ratingRequest.deepCopy() }
+
+                    worker("Очистка поля id рейтинга") { ratingValidating.id = CwpRatingId(ratingValidating.id.asString().trim()) }
+                    worker("Очистка поля тип рейтинга") { ratingValidating.scoreTypeId = CwpRatingScoreTypeId(ratingValidating.scoreTypeId.asString().trim()) }
+                    worker("Очистка поля объект рейтинга") { ratingValidating.objectId = CwpRatingObjectId(ratingValidating.objectId.asString().trim()) }
+                    worker("Очистка поля тип объекта рейтинга") { ratingValidating.objectTypeId = CwpRatingObjectTypeId(ratingValidating.objectTypeId.asString().trim()) }
+
+                    validateIdNotEmpty("Проверка, что поле id рейтинга не пустое")
+                    validateScoreTypeIdNotEmpty("Проверка, что поле тип рейтинга не пустое")
+                    validateObjectIdNotEmpty("Проверка, что поле объект рейтинга не пустое")
+                    validateObjectTypeIdNotEmpty("Проверка, что поле тип объекта рейтинга не пустое")
+
+                    validateIdProperFormat("Проверка формата поля id рейтинга")
+                    validateScoreTypeIdProperFormat("Проверка формата поля тип рейтинга")
+                    validateObjectIdProperFormat("Проверка формата поля объект рейтинга")
+                    validateObjectTypeIdProperFormat("Проверка формата поля тип объекта рейтинга")
+
+                    finishRatingValidation("Завершение проверок")
+                }
             }
 
             operation("Удалить рейтинг", CwpRatingCommand.DELETE) {
@@ -88,14 +101,15 @@ class CwpRatingProcessor {
                     stubDbError("Имитация ошибки работы с БД")
                     stubNoCase("Ошибка: запрошенный стаб недопустим")
                 }
-//                validation {
-//                    worker("Копируем поля в adValidating") {
-//                        adValidating = adRequest.deepCopy() }
-//                    worker("Очистка id") { adValidating.id = MkplAdId(adValidating.id.asString().trim()) }
-//                    validateIdNotEmpty("Проверка на непустой id")
-//                    validateIdProperFormat("Проверка формата id")
-//                    finishAdValidation("Успешное завершение процедуры валидации")
-//                }
+                validation {
+                    worker("Копируем поля в ratingValidating") { ratingValidating = ratingRequest.deepCopy() }
+
+                    worker("Очистка поля id рейтинга") { ratingValidating.id = CwpRatingId(ratingValidating.id.asString().trim()) }
+                    validateIdNotEmpty("Проверка, что поле id рейтинга не пустое")
+                    validateIdProperFormat("Проверка формата поля id рейтинга")
+
+                    finishRatingValidation("Завершение проверок")
+                }
             }
 
             operation("Поиск рейтингов", CwpRatingCommand.SEARCH) {
@@ -105,11 +119,10 @@ class CwpRatingProcessor {
                     stubDbError("Имитация ошибки работы с БД")
                     stubNoCase("Ошибка: запрошенный стаб недопустим")
                 }
-//                validation {
-//                    worker("Копируем поля в adFilterValidating") { adFilterValidating = adFilterRequest.copy() }
-//
-//                    finishAdFilterValidation("Успешное завершение процедуры валидации")
-//                }
+                validation {
+                    worker("Копируем поля в ratingFilterValidating") { ratingFilterValidating = ratingFilterRequest.copy() }
+                    finishRatingValidation("Завершение проверок")
+                }
             }
         }.build()
     }
