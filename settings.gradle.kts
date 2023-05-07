@@ -60,6 +60,7 @@ include("rabbit")
 include("lib-cor")
 include("lib-logging-common")
 include("lib-logging-logback")
+include("lib-logging-kermit")
 include("mappers-log")
 include("api-log")
 
