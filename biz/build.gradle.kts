@@ -17,9 +17,12 @@ kotlin {
             dependencies {
                 implementation(kotlin("stdlib-common"))
 
+                val kotlinCorVersion: String by project
+                implementation("com.crowdproj:kotlin-cor:$kotlinCorVersion")
+
                 implementation(project(":common"))
                 implementation(project(":stubs"))
-                implementation(project(":lib-cor"))
+//                implementation(project(":lib-cor"))
             }
         }
         @Suppress("UNUSED_VARIABLE")

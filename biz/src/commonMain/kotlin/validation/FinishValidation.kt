@@ -1,11 +1,11 @@
 package com.crowdproj.rating.biz.validation
 
+import com.crowdproj.kotlin.cor.ICorAddExecDsl
+import com.crowdproj.kotlin.cor.handlers.worker
 import com.crowdproj.rating.common.CwpRatingContext
 import com.crowdproj.rating.common.model.CwpRatingState
-import com.crowdproj.rating.cor.ICorChainDsl
-import com.crowdproj.rating.cor.worker
 
-fun ICorChainDsl<CwpRatingContext>.finishRatingValidation(title: String) = worker {
+fun ICorAddExecDsl<CwpRatingContext>.finishRatingValidation(title: String) = worker {
     this.title = title
     on { state == CwpRatingState.RUNNING }
     handle {
@@ -13,7 +13,7 @@ fun ICorChainDsl<CwpRatingContext>.finishRatingValidation(title: String) = worke
     }
 }
 
-fun ICorChainDsl<CwpRatingContext>.finishRatingFilterValidation(title: String) = worker {
+fun ICorAddExecDsl<CwpRatingContext>.finishRatingFilterValidation(title: String) = worker {
     this.title = title
     on { state == CwpRatingState.RUNNING }
     handle {

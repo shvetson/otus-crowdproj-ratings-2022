@@ -1,15 +1,14 @@
 package com.crowdproj.rating.biz.worker
 
+import com.crowdproj.kotlin.cor.ICorAddExecDsl
+import com.crowdproj.kotlin.cor.handlers.worker
 import com.crowdproj.rating.common.CwpRatingContext
 import com.crowdproj.rating.common.model.CwpRatingScoreTypeId
 import com.crowdproj.rating.common.model.CwpRatingState
 import com.crowdproj.rating.common.stub.CwpRatingStubs
-import com.crowdproj.rating.cor.ICorChainDsl
-import com.crowdproj.rating.cor.worker
 import com.crowdproj.rating.stubs.CwpRatingStub
 
-
-fun ICorChainDsl<CwpRatingContext>.stubDeleteSuccess(title: String) = worker {
+fun ICorAddExecDsl<CwpRatingContext>.stubDeleteSuccess(title: String) = worker {
     this.title = title
     on { stubCase == CwpRatingStubs.SUCCESS && state == CwpRatingState.RUNNING }
     handle {

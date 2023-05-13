@@ -1,13 +1,13 @@
 package com.crowdproj.rating.biz
 
+import com.crowdproj.kotlin.cor.handlers.worker
+import com.crowdproj.kotlin.cor.rootChain
 import com.crowdproj.rating.biz.group.operation
 import com.crowdproj.rating.biz.group.stubs
 import com.crowdproj.rating.biz.validation.*
 import com.crowdproj.rating.biz.worker.*
 import com.crowdproj.rating.common.CwpRatingContext
 import com.crowdproj.rating.common.model.*
-import com.crowdproj.rating.cor.rootChain
-import com.crowdproj.rating.cor.worker
 
 class CwpRatingProcessor {
     suspend fun exec(ctx: CwpRatingContext) = BusinessChain.exec(ctx)
@@ -60,7 +60,6 @@ class CwpRatingProcessor {
 
                     finishRatingValidation("Завершение проверок")
                 }
-//                computeAdState("Вычисление состояния рейтинга")
             }
 
             operation("Изменить рейтинг", CwpRatingCommand.UPDATE) {

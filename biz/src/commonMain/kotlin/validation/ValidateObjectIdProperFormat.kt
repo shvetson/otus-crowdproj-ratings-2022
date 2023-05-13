@@ -1,14 +1,13 @@
 package com.crowdproj.rating.biz.validation
 
+import com.crowdproj.kotlin.cor.ICorAddExecDsl
+import com.crowdproj.kotlin.cor.handlers.worker
 import com.crowdproj.rating.common.CwpRatingContext
 import com.crowdproj.rating.common.helper.errorValidation
 import com.crowdproj.rating.common.helper.fail
-import com.crowdproj.rating.common.model.CwpRatingId
 import com.crowdproj.rating.common.model.CwpRatingObjectId
-import com.crowdproj.rating.cor.ICorChainDsl
-import com.crowdproj.rating.cor.worker
 
-fun ICorChainDsl<CwpRatingContext>.validateObjectIdProperFormat(title: String) = worker {
+fun ICorAddExecDsl<CwpRatingContext>.validateObjectIdProperFormat(title: String) = worker {
     this.title = title
 
     val regExp = Regex("^[0-9]+$")

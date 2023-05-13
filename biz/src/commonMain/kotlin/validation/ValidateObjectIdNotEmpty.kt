@@ -1,12 +1,12 @@
 package com.crowdproj.rating.biz.validation
 
+import com.crowdproj.kotlin.cor.ICorAddExecDsl
+import com.crowdproj.kotlin.cor.handlers.worker
 import com.crowdproj.rating.common.CwpRatingContext
 import com.crowdproj.rating.common.helper.errorValidation
 import com.crowdproj.rating.common.helper.fail
-import com.crowdproj.rating.cor.ICorChainDsl
-import com.crowdproj.rating.cor.worker
 
-fun ICorChainDsl<CwpRatingContext>.validateObjectIdNotEmpty(title: String) = worker {
+fun ICorAddExecDsl<CwpRatingContext>.validateObjectIdNotEmpty(title: String) = worker {
     this.title = title
     on { ratingValidating.objectId.asString().isEmpty() }
     handle {
