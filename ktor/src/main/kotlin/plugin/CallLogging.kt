@@ -14,13 +14,6 @@ fun Application.configureCallLogging(appSettings: CwpRatingAppSettings, clazz: S
     install(DoubleReceive)
 
     install(CallLogging) {
-        level = Level.TRACE
-        format { call ->
-            runBlocking {
-                "Body: ${call.receiveText()}"
-            }
-        }
-
         level = Level.INFO
         val lgr = appSettings
             .corSettings

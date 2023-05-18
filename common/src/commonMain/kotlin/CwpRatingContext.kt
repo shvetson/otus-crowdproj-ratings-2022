@@ -2,6 +2,7 @@ package com.crowdproj.rating.common
 
 import com.crowdproj.rating.common.model.*
 import com.crowdproj.rating.common.stub.CwpRatingStubs
+import com.crowdproj.rating.common.repo.IRatingRepository
 import kotlinx.datetime.Instant
 
 /**
@@ -21,6 +22,12 @@ data class CwpRatingContext(
 
     var requestId: CwpRatingRequestId = CwpRatingRequestId.NONE,
     var timeStart: Instant = Instant.NONE,
+
+    var ratingRepo: IRatingRepository = IRatingRepository.NONE,
+    var ratingRepoRead: CwpRating = CwpRating(),
+    var ratingRepoPrepare: CwpRating = CwpRating(),
+    var ratingRepoDone: CwpRating = CwpRating(),
+    var ratingsRepoDone: MutableList<CwpRating> = mutableListOf(),
 
     var ratingRequest: CwpRating = CwpRating(),
     var ratingFilterRequest: CwpRatingFilter = CwpRatingFilter(),

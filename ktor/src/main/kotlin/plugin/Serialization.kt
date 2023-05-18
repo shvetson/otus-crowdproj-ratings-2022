@@ -8,8 +8,6 @@ import io.ktor.server.plugins.contentnegotiation.*
 
 fun Application.configureSerialization() {
     install(ContentNegotiation) {
-//        json()
-
         jackson {
             setConfig(apiV1Mapper.serializationConfig)
             setConfig(apiV1Mapper.deserializationConfig)

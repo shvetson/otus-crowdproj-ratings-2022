@@ -68,6 +68,7 @@ dependencies {
     implementation(project(":lib-logging-logback"))
     implementation(project(":mappers-log"))
     implementation(project(":api-log"))
+    implementation(project(":repo-in-memory"))
 }
 
 //tasks {

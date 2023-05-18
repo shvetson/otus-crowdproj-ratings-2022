@@ -8,8 +8,8 @@ package com.crowdproj.rating.common.model
 
 data class CwpRatingFilter(
     var searchString: String = "",
-    var typeId: CwpRatingId = CwpRatingId.NONE,
-    var objectId: CwpRatingObjectId = CwpRatingObjectId.NONE,
+    var scoreTypeId: CwpRatingScoreTypeId = CwpRatingScoreTypeId.NONE,
     var objectTypeId: CwpRatingObjectTypeId = CwpRatingObjectTypeId.NONE,
+    var objectId: CwpRatingObjectId = CwpRatingObjectId.NONE,
     var ownerId: CwpRatingUserId = CwpRatingUserId.NONE,
 )

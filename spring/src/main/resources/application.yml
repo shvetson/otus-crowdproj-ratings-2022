@@ -18,3 +18,11 @@ springdoc:
     urls:
       - name: v1
         url: spec-crowdproj-ratings-v1.yaml
+
+sql:
+  url: ${SQL_URL:jdbc:postgresql://localhost:5432/rating}
+  user: ${SQL_USER:postgres}
+  password: ${SQL_PASSWORD:postgres}
+  schema: ${SQL_SCHEMA:rating}
+  drop-database: ${SQL_DROP_DATABASE:false}
+  fast-migration: ${SQL_FAST_MIGRATION:true}

@@ -1,0 +1,1 @@
+package com.crowdproj.rating.repo.stubs

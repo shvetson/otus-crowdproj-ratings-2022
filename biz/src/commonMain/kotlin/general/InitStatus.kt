@@ -1,4 +1,4 @@
-package com.crowdproj.rating.biz.worker
+package com.crowdproj.rating.biz.general
 
 import com.crowdproj.kotlin.cor.ICorAddExecDsl
 import com.crowdproj.kotlin.cor.handlers.worker

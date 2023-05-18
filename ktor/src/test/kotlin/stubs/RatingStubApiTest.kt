@@ -1,4 +1,4 @@
-package com.crowdproj.rating.ktor
+package com.crowdproj.rating.ktor.stubs
 
 import com.crowdproj.rating.api.v1.models.*
 import com.fasterxml.jackson.databind.DeserializationFeature

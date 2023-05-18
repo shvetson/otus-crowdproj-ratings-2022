@@ -20,9 +20,13 @@ data class CwpRating(
     var createdAt: Instant = Instant.NONE,
     var updatedAt: Instant = Instant.NONE,
     var ownerId: CwpRatingUserId = CwpRatingUserId.NONE,
+    var lock: CwpRatingLock = CwpRatingLock.NONE,
     var permissions: MutableList<CwpRatingPermission> = mutableListOf(),
 ) {
-    fun deepCopy(): CwpRating = copy(
-        permissions = permissions.toMutableList(),
-    )
+    fun deepCopy(): CwpRating = copy(permissions = permissions.toMutableList(),)
+    fun isEmpty() = this == NONE
+
+    companion object {
+        val NONE = CwpRating()
+    }
 }

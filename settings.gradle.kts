@@ -63,4 +63,8 @@ include("lib-logging-logback")
 include("lib-logging-kermit")
 include("mappers-log")
 include("api-log")
+include("repo-in-memory")
+include("repo-tests")
+include("repo-postgresql")
+include("repo-stubs")
 

@@ -36,7 +36,7 @@ dependencies {
     // stubs
     implementation(project(":stubs"))
 
-    //biz
+    // biz
     implementation(project(":biz"))
 
     // logging
@@ -44,6 +44,12 @@ dependencies {
     implementation(project(":lib-logging-logback"))
     implementation(project(":mappers-log"))
     implementation(project(":api-log"))
+
+    // repository
+    implementation(project(":repo-in-memory"))
+    implementation(project(":repo-postgresql"))
+    implementation(project(":repo-tests"))
+    implementation(project(":repo-stubs"))
 
     // tests
     testImplementation("org.springframework.boot:spring-boot-starter-test")
