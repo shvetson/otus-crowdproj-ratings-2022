@@ -67,4 +67,5 @@ include("repo-in-memory")
 include("repo-tests")
 include("repo-postgresql")
 include("repo-stubs")
+include("repo-cassandra")
 

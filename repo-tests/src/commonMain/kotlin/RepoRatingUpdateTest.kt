@@ -13,8 +13,8 @@ abstract class RepoRatingUpdateTest {
     protected open val updateSucc = initObjects[0]
     protected open val updateConc = initObjects[1]
     protected val updateIdNotFound = CwpRatingId("rating-repo-update-not-found")
-//    protected val lockBad = CwpRatingLock("20000000-0000-0000-0000-000000000009")
-//    protected val lockNew = CwpRatingLock("20000000-0000-0000-0000-000000000002")
+    protected val lockBad = CwpRatingLock("20000000-0000-0000-0000-000000000009")
+    protected val lockNew = CwpRatingLock("20000000-0000-0000-0000-000000000002")
 
     private val reqUpdateSucc by lazy {
         CwpRating(
@@ -23,7 +23,7 @@ abstract class RepoRatingUpdateTest {
             objectTypeId = CwpRatingObjectTypeId("11 updated"),
             objectId = CwpRatingObjectId("111 updated"),
             ownerId = CwpRatingUserId("owner-123"),
-//            lock = initObjects.first().lock,
+            lock =  initObjects.first().lock,
         )
     }
     private val reqUpdateNotFound = CwpRating(
@@ -32,7 +32,7 @@ abstract class RepoRatingUpdateTest {
         objectTypeId = CwpRatingObjectTypeId("11 update object not found"),
         objectId = CwpRatingObjectId("111 update object not found"),
         ownerId = CwpRatingUserId("owner-123"),
-//        lock = initObjects.first().lock,
+        lock = initObjects.first().lock,
     )
 
     private val reqUpdateConc by lazy {
@@ -42,7 +42,7 @@ abstract class RepoRatingUpdateTest {
             objectTypeId = CwpRatingObjectTypeId("11 update object not found"),
             objectId = CwpRatingObjectId("111 update object not found"),
             ownerId = CwpRatingUserId("owner-123"),
-//            lock = lockBad,
+            lock = lockBad,
         )
     }
 
@@ -55,7 +55,7 @@ abstract class RepoRatingUpdateTest {
         assertEquals(reqUpdateSucc.objectTypeId, result.data?.objectTypeId)
         assertEquals(reqUpdateSucc.objectId, result.data?.objectId)
         assertEquals(emptyList(), result.errors)
-//        assertEquals(lockNew, result.data?.lock)
+        assertEquals(lockNew, result.data?.lock)
     }
 
     @Test
@@ -72,7 +72,7 @@ abstract class RepoRatingUpdateTest {
         val result = repo.updateRating(DbRatingRequest(reqUpdateConc))
         assertEquals(false, result.isSuccess)
         val error = result.errors.find { it.code == "concurrency" }
-//        assertEquals("lock", error?.field)
+        assertEquals("lock", error?.field)
         assertEquals(updateConc, result.data)
     }
 

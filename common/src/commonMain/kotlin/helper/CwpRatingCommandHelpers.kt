@@ -1,4 +1,4 @@
-package com.crowdproj.rating.common.helpers
+package com.crowdproj.rating.common.helper
 
 import com.crowdproj.rating.common.CwpRatingContext
 import com.crowdproj.rating.common.model.CwpRatingCommand

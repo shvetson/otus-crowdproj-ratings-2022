@@ -4,8 +4,8 @@ import com.crowdproj.rating.common.model.*
 
 abstract class BaseInitRatings(val op: String): IInitObjects<CwpRating> {
 
-//    open val lockOld: CwpRatingLock = CwpRatingLock("20000000-0000-0000-0000-000000000001")
-//    open val lockBad: CwpRatingLock = CwpRatingLock("20000000-0000-0000-0000-000000000009")
+    open val lockOld: CwpRatingLock = CwpRatingLock("20000000-0000-0000-0000-000000000001")
+    open val lockBad: CwpRatingLock = CwpRatingLock("20000000-0000-0000-0000-000000000009")
 
     fun createInitTestModel(
         suf: String,
@@ -13,13 +13,13 @@ abstract class BaseInitRatings(val op: String): IInitObjects<CwpRating> {
         objectTypeId: CwpRatingObjectTypeId = CwpRatingObjectTypeId("11"),
         objectId: CwpRatingObjectId = CwpRatingObjectId("111"),
         ownerId: CwpRatingUserId = CwpRatingUserId("owner-123"),
-//        lock: CwpRatingLock = lockOld,
+        lock: CwpRatingLock = lockOld,
     ) = CwpRating(
         id = CwpRatingId("rating-repo-$op-$suf"),
         scoreTypeId = scoreTypeId,
         objectTypeId = objectTypeId,
         objectId = objectId,
         ownerId = ownerId,
-//        lock = lock,
+        lock = lock,
     )
 }

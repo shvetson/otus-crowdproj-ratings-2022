@@ -18,8 +18,8 @@ abstract class RepoRatingDeleteTest {
     @Test
     fun deleteSuccess() = runRepoTest {
         val lockOld = deleteSucc.lock
-        val result = repo.deleteRating(DbRatingIdRequest(deleteSucc.id))
-//        val result = repo.deleteRating(DbRatingIdRequest(deleteSucc.id, lock = lockOld))
+//        val result = repo.deleteRating(DbRatingIdRequest(deleteSucc.id))
+        val result = repo.deleteRating(DbRatingIdRequest(deleteSucc.id, lock = lockOld))
 
         assertEquals(true, result.isSuccess)
         assertEquals(emptyList(), result.errors)
@@ -28,8 +28,8 @@ abstract class RepoRatingDeleteTest {
 
     @Test
     fun deleteNotFound() = runRepoTest {
-        val result = repo.readRating(DbRatingIdRequest(notFoundId))
-//        val result = repo.readRating(DbRatingIdRequest(notFoundId, lock = lockOld))
+//        val result = repo.readRating(DbRatingIdRequest(notFoundId))
+        val result = repo.readRating(DbRatingIdRequest(notFoundId, lock = lockOld))
 
         assertEquals(false, result.isSuccess)
         assertEquals(null, result.data)
@@ -40,8 +40,8 @@ abstract class RepoRatingDeleteTest {
     @Test
     fun deleteConcurrency() = runRepoTest {
         val lockOld = deleteSucc.lock
-        val result = repo.deleteRating(DbRatingIdRequest(deleteConc.id))
-//        val result = repo.deleteRating(DbRatingIdRequest(deleteConc.id, lock = lockBad))
+//        val result = repo.deleteRating(DbRatingIdRequest(deleteConc.id))
+        val result = repo.deleteRating(DbRatingIdRequest(deleteConc.id, lock = lockBad))
 
         assertEquals(false, result.isSuccess)
         val error = result.errors.find { it.code == "concurrency" }

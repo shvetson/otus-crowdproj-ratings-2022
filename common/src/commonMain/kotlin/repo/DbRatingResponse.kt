@@ -20,8 +20,7 @@ data class DbRatingResponse(
 
     companion object {
         val MOCK_SUCCESS_EMPTY = DbRatingResponse(null, true)
-        fun success(result: CwpRating) = DbRatingResponse(result, true)
-        fun success(result: CwpRating, isSuccess: Boolean) = DbRatingResponse(result, isSuccess)
+        fun success(result: CwpRating, isSuccess: Boolean = true) = DbRatingResponse(result, isSuccess)
         fun error(errors: List<CwpRatingError>) = DbRatingResponse(null, false, errors)
         fun error(error: CwpRatingError) = DbRatingResponse(null, false, listOf(error))
 

@@ -16,7 +16,6 @@ abstract class RepoRatingReadTest {
     @Test
     fun readSuccess() = runRepoTest {
         val result = repo.readRating(DbRatingIdRequest(readSucc.id))
-
         assertEquals(true, result.isSuccess)
         assertEquals(readSucc, result.data)
         assertEquals(emptyList(), result.errors)
@@ -32,7 +31,7 @@ abstract class RepoRatingReadTest {
         assertEquals("id", error?.field)
     }
 
-    companion object : BaseInitRatings("delete") {
+    companion object : BaseInitRatings("read") {
         override val initObjects: List<CwpRating> = listOf(
             createInitTestModel("read")
         )

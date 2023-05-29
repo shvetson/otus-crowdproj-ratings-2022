@@ -26,22 +26,24 @@ abstract class RepoRatingSearchTest {
 
     @Test
     fun searchScoreType() = runRepoTest {
-        val result = repo.searchRating(DbRatingFilterRequest(scoreTypeId = CwpRatingScoreTypeId("1")))
+        val result = repo.searchRating(DbRatingFilterRequest(scoreTypeId = searchScoreTypeId))
         assertEquals(true, result.isSuccess)
         val expected = listOf(initializedObjects[2], initializedObjects[4]).sortedBy { it.id.asString() }
         assertEquals(expected, result.data?.sortedBy { it.id.asString() })
         assertEquals(emptyList(), result.errors)
     }
 
-    companion object: BaseInitRatings("search") {
+    companion object : BaseInitRatings("search") {
 
         val searchOwnerId = CwpRatingUserId("owner-124")
+        val searchScoreTypeId = CwpRatingScoreTypeId("scoreType-1")
+
         override val initObjects: List<CwpRating> = listOf(
             createInitTestModel("rating1"),
             createInitTestModel("rating2", ownerId = searchOwnerId),
-            createInitTestModel("rating3", scoreTypeId = CwpRatingScoreTypeId("1")),
+            createInitTestModel("rating3", scoreTypeId = searchScoreTypeId),
             createInitTestModel("rating4", ownerId = searchOwnerId),
-            createInitTestModel("rating5", scoreTypeId = CwpRatingScoreTypeId("1")),
+            createInitTestModel("rating5", scoreTypeId = searchScoreTypeId),
         )
     }
 }

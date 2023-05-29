@@ -68,7 +68,10 @@ dependencies {
     implementation(project(":lib-logging-logback"))
     implementation(project(":mappers-log"))
     implementation(project(":api-log"))
+
     implementation(project(":repo-in-memory"))
+    implementation(project(":repo-postgresql"))
+    implementation(project(":repo-cassandra"))
 }
 
 //tasks {

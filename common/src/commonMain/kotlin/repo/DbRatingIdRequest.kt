@@ -2,6 +2,7 @@ package com.crowdproj.rating.common.repo
 
 import com.crowdproj.rating.common.model.CwpRating
 import com.crowdproj.rating.common.model.CwpRatingId
+import com.crowdproj.rating.common.model.CwpRatingLock
 
 /**
  * @author  Oleg Shvets
@@ -11,6 +12,7 @@ import com.crowdproj.rating.common.model.CwpRatingId
 
 data class DbRatingIdRequest(
     val id: CwpRatingId,
+    val lock: CwpRatingLock = CwpRatingLock.NONE,
 ) {
-    constructor(rating: CwpRating) : this(rating.id)
+    constructor(rating: CwpRating) : this(rating.id, rating.lock)
 }

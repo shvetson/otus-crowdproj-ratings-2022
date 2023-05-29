@@ -12,7 +12,7 @@ import kotlin.test.assertNotEquals
 abstract class RepoRatingCreateTest {
     abstract val repo: IRatingRepository
 
-//    protected open val lockNew: CwpRatingLock = CwpRatingLock("20000000-0000-0000-0000-000000000002")
+    protected open val lockNew: CwpRatingLock = CwpRatingLock("20000000-0000-0000-0000-000000000002")
 
     private val createObj = CwpRating(
         scoreTypeId = CwpRatingScoreTypeId("1"),
@@ -32,7 +32,7 @@ abstract class RepoRatingCreateTest {
         assertEquals(expected.objectId, result.data?.objectId)
         assertNotEquals(CwpRatingId.NONE, result.data?.id)
         assertEquals(emptyList(), result.errors)
-//        assertEquals(lockNew, result.data?.lock)
+        assertEquals(lockNew, result.data?.lock)
     }
 
     companion object : BaseInitRatings("create") {
