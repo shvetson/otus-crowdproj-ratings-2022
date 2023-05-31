@@ -73,6 +73,7 @@ dependencies {
     implementation(project(":repo-in-memory"))
     implementation(project(":repo-postgresql"))
     implementation(project(":repo-cassandra"))
+    implementation(project(":repo-gremlin"))
 }
 
 //tasks {

@@ -1,7 +1,9 @@
 package com.crowdproj.rating.common.helper
 
 import com.crowdproj.rating.common.CwpRatingContext
+import com.crowdproj.rating.common.exception.RepoConcurrencyException
 import com.crowdproj.rating.common.model.CwpRatingError
+import com.crowdproj.rating.common.model.CwpRatingLock
 import com.crowdproj.rating.common.model.CwpRatingState
 
 fun Throwable.asCwpRatingError(
@@ -60,6 +62,19 @@ fun errorAdministration(
     description = "Microservice management error: $description",
     level = level,
     exception = exception,
+)
+
+fun errorRepoConcurrency(
+    expectedLock: CwpRatingLock,
+    actualLock: CwpRatingLock?,
+    exception: Exception? = null,
+) = CwpRatingError(
+    field = "lock",
+    code = "concurrency",
+    group = "repo",
+    title = "concurrency",
+    description = "The object has been changed concurrently by another user or process",
+    exception = exception ?: RepoConcurrencyException(expectedLock, actualLock),
 )
 
 val errorEmptyId = CwpRatingError(

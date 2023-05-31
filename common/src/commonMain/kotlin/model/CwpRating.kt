@@ -13,8 +13,8 @@ import kotlinx.datetime.Instant
 data class CwpRating(
     var id: CwpRatingId = CwpRatingId.NONE,
     var scoreTypeId: CwpRatingScoreTypeId = CwpRatingScoreTypeId.NONE,
-    var objectId: CwpRatingObjectId = CwpRatingObjectId.NONE,
     var objectTypeId: CwpRatingObjectTypeId = CwpRatingObjectTypeId.NONE,
+    var objectId: CwpRatingObjectId = CwpRatingObjectId.NONE,
     var score: Double = 0.0,
     var voteCount: Int = 0,
     var createdAt: Instant = Instant.NONE,

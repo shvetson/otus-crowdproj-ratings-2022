@@ -16,6 +16,7 @@ abstract class RepoRatingReadTest {
     @Test
     fun readSuccess() = runRepoTest {
         val result = repo.readRating(DbRatingIdRequest(readSucc.id))
+
         assertEquals(true, result.isSuccess)
         assertEquals(readSucc, result.data)
         assertEquals(emptyList(), result.errors)

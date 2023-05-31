@@ -3,8 +3,10 @@ package com.crowdproj.rating.ktor.plugin
 import com.crowdproj.rating.common.repo.IRatingRepository
 import com.crowdproj.rating.ktor.config.CassandraConfig
 import com.crowdproj.rating.ktor.config.ConfigPaths
+import com.crowdproj.rating.ktor.config.GremlinConfig
 import com.crowdproj.rating.ktor.config.PostgresConfig
 import com.crowdproj.rating.repo.cassandra.RepoRatingCassandra
+import com.crowdproj.rating.repo.gremlin.RatingRepoGremlin
 import com.crowdproj.rating.repo.inmemory.RatingRepoInMemory
 import com.crowdproj.rating.repo.postgresql.RepoRatingSQL
 import com.crowdproj.rating.repo.postgresql.SqlProperties
@@ -22,7 +24,7 @@ fun Application.getDatabaseConf(type: RatingDbType): IRatingRepository {
         "in-memory", "inmemory", "memory", "mem" -> initInMemory()
         "postgres", "postgresql", "pg", "sql", "psql" -> initPostgres()
         "cassandra", "nosql", "cass" -> initCassandra()
-//        "arcade", "arcadedb", "graphdb", "gremlin", "g", "a" -> initGremliln()
+        "arcade", "arcadedb", "graphdb", "gremlin", "g", "a" -> initGremliln()
         else -> throw IllegalArgumentException(
             "$dbSettingPath must be set in application.yml to one of: " +
                     "'inmemory', 'postgres', 'cassandra', 'gremlin'"
@@ -53,16 +55,16 @@ private fun Application.initCassandra(): IRatingRepository {
     )
 }
 
-//private fun Application.initGremliln(): IRatingRepository {
-//    val config = GremlinConfig(environment.config)
-//    return RatingRepoGremlin(
-//        hosts = config.host,
-//        port = config.port,
-//        user = config.user,
-//        pass = config.pass,
-//        enableSsl = config.enableSsl,
-//    )
-//}
+private fun Application.initGremliln(): IRatingRepository {
+    val config = GremlinConfig(environment.config)
+    return RatingRepoGremlin(
+        hosts = config.host,
+        port = config.port,
+        user = config.user,
+        pass = config.pass,
+        enableSsl = config.enableSsl,
+    )
+}
 
 private fun Application.initInMemory(): IRatingRepository {
     val ttlSetting = environment.config.propertyOrNull("db.prod")?.getString()?.let {
