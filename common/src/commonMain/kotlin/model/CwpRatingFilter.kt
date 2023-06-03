@@ -12,4 +12,5 @@ data class CwpRatingFilter(
     var objectTypeId: CwpRatingObjectTypeId = CwpRatingObjectTypeId.NONE,
     var objectId: CwpRatingObjectId = CwpRatingObjectId.NONE,
     var ownerId: CwpRatingUserId = CwpRatingUserId.NONE,
+    var searchPermissions: MutableSet<CwpRatingSearchPermissions> = mutableSetOf(),
 )

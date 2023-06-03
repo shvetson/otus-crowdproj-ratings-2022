@@ -20,6 +20,12 @@ plugins {
     id("com.bmuschko.docker-remote-api")
 }
 
+val webjars: Configuration by configurations.creating
+dependencies {
+    val swaggerUiVersion: String by project
+    webjars("org.webjars:swagger-ui:$swaggerUiVersion")
+}
+
 repositories {
     maven {
         url = uri("https://maven.pkg.jetbrains.space/public/p/ktor/eap")
@@ -49,6 +55,15 @@ dependencies {
 
     implementation("ch.qos.logback:logback-classic:$logbackVersion")
     implementation("io.ktor:ktor-server-config-yaml:$ktorVersion")
+
+    implementation("io.ktor:ktor-server-auth:$ktorVersion")
+    implementation("io.ktor:ktor-server-auth-jwt:$ktorVersion")
+
+//    implementation("io.ktor:ktor-auth:$ktorVersion")
+//    implementation("io.ktor:ktor-auth-jwt:$ktorVersion")
+
+//    implementation("com.sndyuk:logback-more-appenders:1.8.8")
+//    implementation("org.fluentd:fluent-logger:0.3.4")
 
     // тесты, в тч ktor-client-content-negotiation
     testImplementation("org.jetbrains.kotlin:kotlin-test:$kotlinVersion")
@@ -98,3 +113,42 @@ dependencies {
 //        images.add("${project.name}:${project.version}")
 //    }
 //}
+
+tasks {
+    shadowJar {
+        isZip64 = true
+    }
+
+    @Suppress("UnstableApiUsage")
+    withType<ProcessResources>().configureEach {
+        println("RESOURCES: ${this.name} ${this::class}")
+        from("$rootDir/specs") {
+            into("specs")
+            filter {
+                // Устанавливаем версию в сваггере
+                it.replace("\${VERSION_APP}", project.version.toString())
+            }
+        }
+        webjars.forEach { jar ->
+//        emptyList<File>().forEach { jar ->
+            val conf = webjars.resolvedConfiguration
+            println("JarAbsPa: ${jar.absolutePath}")
+            val artifact = conf.resolvedArtifacts.find { it.file.toString() == jar.absolutePath } ?: return@forEach
+            val upStreamVersion = artifact.moduleVersion.id.version.replace("(-[\\d.-]+)", "")
+            copy {
+                from(zipTree(jar))
+                duplicatesStrategy = DuplicatesStrategy.EXCLUDE
+                into(file("${buildDir}/webjars-content/${artifact.name}"))
+            }
+            with(this@configureEach) {
+                this.duplicatesStrategy = DuplicatesStrategy.EXCLUDE
+                from(
+                    "${buildDir}/webjars-content/${artifact.name}/META-INF/resources/webjars/${artifact.name}/${upStreamVersion}"
+                ) { into(artifact.name) }
+                from(
+                    "${buildDir}/webjars-content/${artifact.name}/META-INF/resources/webjars/${artifact.name}/${artifact.moduleVersion.id.version}"
+                ) { into(artifact.name) }
+            }
+        }
+    }
+}

@@ -95,11 +95,11 @@ fun CwpRating.toTransportRating() = RatingResponseObject(
     createdAt = createdAt.takeIf { it != Instant.NONE }.toString(),
     updatedAt = updatedAt.takeIf { it != Instant.NONE }.toString(),
     ownerId = ownerId.takeIf { it != CwpRatingUserId.NONE }?.asString(),
-    permissions = permissions.toTransportPermissions()
+    permissions = permissionsClient.toTransportPermissions()
 )
 
 // #7
-fun MutableList<CwpRatingPermission>.toTransportPermissions() = this
+fun MutableSet<CwpRatingPermission>.toTransportPermissions() = this
     .map { it.toTransportPermissions() }
     .toSet()
     .takeIf { it.isNotEmpty() }

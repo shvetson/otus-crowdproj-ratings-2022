@@ -44,5 +44,5 @@ fun CwpRating.toLog() = RatingLog(
     objectId = objectId.takeIf { it != CwpRatingObjectId.NONE }?.asString(),
     objectTypeId = objectTypeId.takeIf { it != CwpRatingObjectTypeId.NONE }?.asString(),
     ownerId = ownerId.takeIf { it != CwpRatingUserId.NONE }?.asString(),
-    permissions = permissions.takeIf { it.isNotEmpty() }?.map { it.name }?.toSet(),
+    permissions = permissionsClient.takeIf { it.isNotEmpty() }?.map { it.name }?.toSet(),
 )
