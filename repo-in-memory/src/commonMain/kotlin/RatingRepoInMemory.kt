@@ -1,10 +1,12 @@
 package com.crowdproj.rating.repo.inmemory
 
 import com.benasher44.uuid.uuid4
+import com.crowdproj.rating.common.helper.errorRepoConcurrency
 import com.crowdproj.rating.common.model.*
 import com.crowdproj.rating.common.repo.*
 import io.github.reactivecircus.cache4k.Cache
 import kotlinx.coroutines.sync.Mutex
+import kotlinx.coroutines.sync.withLock
 import kotlin.time.Duration
 import kotlin.time.Duration.Companion.minutes
 
@@ -63,30 +65,57 @@ class RatingRepoInMemory(
 
     override suspend fun updateRating(rq: DbRatingRequest): DbRatingResponse {
         val key = rq.rating.id.takeIf { it != CwpRatingId.NONE }?.asString() ?: return resultErrorEmptyId
+        val oldLock = rq.rating.lock.takeIf { it != CwpRatingLock.NONE }?.asString() ?: return resultErrorEmptyLock
         val newRating = rq.rating.copy()
         val entity = CwpRatingEntity(newRating)
-        return when (cache.get(key)) {
-            null -> resultErrorNotFound
-            else -> {
-                cache.put(key, entity)
-                DbRatingResponse(
-                    data = newRating,
-                    isSuccess = true,
+        return mutex.withLock {
+            val oldRating = cache.get(key)
+            when {
+                oldRating == null -> resultErrorNotFound
+                oldRating.lock != oldLock -> DbRatingResponse(
+                    data = oldRating.toInternal(),
+                    isSuccess = false,
+                    errors = listOf(
+                        errorRepoConcurrency(
+                            CwpRatingLock(oldLock),
+                            oldRating.lock?.let { CwpRatingLock(it) })
+                    )
                 )
+
+                else -> {
+                    cache.put(key, entity)
+                    DbRatingResponse(
+                        data = newRating,
+                        isSuccess = true,
+                    )
+                }
             }
         }
     }
 
     override suspend fun deleteRating(rq: DbRatingIdRequest): DbRatingResponse {
         val key = rq.id.takeIf { it != CwpRatingId.NONE }?.asString() ?: return resultErrorEmptyId
-        return when (val oldRating = cache.get(key)) {
-            null -> resultErrorNotFound
-            else -> {
-                cache.invalidate(key)
-                DbRatingResponse(
+        val oldLock = rq.lock.takeIf { it != CwpRatingLock.NONE }?.asString() ?: return resultErrorEmptyLock
+        return mutex.withLock {
+            val oldRating = cache.get(key)
+            when {
+                oldRating == null -> resultErrorNotFound
+                oldRating.lock != oldLock -> DbRatingResponse(
                     data = oldRating.toInternal(),
-                    isSuccess = true,
+                    isSuccess = false,
+                    errors = listOf(
+                        errorRepoConcurrency(CwpRatingLock(oldLock),
+                            oldRating.lock?.let { CwpRatingLock(it) })
+                    )
                 )
+
+                else -> {
+                    cache.invalidate(key)
+                    DbRatingResponse(
+                        data = oldRating.toInternal(),
+                        isSuccess = true,
+                    )
+                }
             }
         }
     }
