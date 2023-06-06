@@ -3,9 +3,12 @@ val logbackVersion: String by project
 val serializationVersion: String by project
 val ktorPluginVersion: String by project
 val kotlinVersion: String by project
+val javaVersion: String by project
+val datetimeVersion: String by project
 
 fun ktorServer(module: String, version: String? = this@Build_gradle.ktorVersion): Any =
     "io.ktor:ktor-server-$module:$version"
+
 fun ktorClient(module: String, version: String? = this@Build_gradle.ktorVersion): Any =
     "io.ktor:ktor-client-$module:$version"
 
@@ -34,21 +37,33 @@ repositories {
 
 application {
     mainClass.set("io.ktor.server.cio.EngineMain")
-//    mainClass.set("io.ktor.server.netty.EngineMain")
-//    mainClass.set("com.crowdproj.rating.ktor.ApplicationKt")
+}
+
+jib {
+    container { mainClass = application.mainClass.get() }
+}
+
+ktor {
+    docker {
+        localImageName.set(project.name)
+        imageTag.set(project.version.toString())
+        jreVersion.set(io.ktor.plugin.features.JreVersion.valueOf("JRE_$javaVersion"))
+    }
 }
 
 dependencies {
     implementation(kotlin("stdlib-common"))
     implementation("io.ktor:ktor-server-core:$ktorVersion")
-
     implementation("io.ktor:ktor-server-cio:$ktorVersion")
-//    implementation("io.ktor:ktor-server-netty:$ktorVersion")
 
     implementation("io.ktor:ktor-server-content-negotiation:$ktorVersion")
+    implementation("io.ktor:ktor-client-content-negotiation:$ktorVersion")
 
     implementation("io.ktor:ktor-serialization-kotlinx-json:$ktorVersion")
     implementation("io.ktor:ktor-serialization-jackson:$ktorVersion")
+
+    implementation("org.jetbrains.kotlinx:kotlinx-serialization-core:$serializationVersion")
+    implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:$serializationVersion")
 
     implementation("io.ktor:ktor-server-double-receive:$ktorVersion")
     implementation("io.ktor:ktor-server-call-logging:$ktorVersion")
@@ -58,6 +73,11 @@ dependencies {
 
     implementation("io.ktor:ktor-server-auth:$ktorVersion")
     implementation("io.ktor:ktor-server-auth-jwt:$ktorVersion")
+
+    implementation("io.ktor:ktor-server-auto-head-response:$ktorVersion")
+    implementation("io.ktor:ktor-server-caching-headers:$ktorVersion")
+//    implementation("io.ktor:ktor-cors:$ktorVersion")
+    api("org.jetbrains.kotlinx:kotlinx-datetime:$datetimeVersion")
 
 //    implementation("io.ktor:ktor-auth:$ktorVersion")
 //    implementation("io.ktor:ktor-auth-jwt:$ktorVersion")
@@ -69,8 +89,6 @@ dependencies {
     testImplementation("org.jetbrains.kotlin:kotlin-test:$kotlinVersion")
     testImplementation("io.ktor:ktor-server-test-host:$ktorVersion")
     testImplementation("org.jetbrains.kotlin:kotlin-test:$kotlinVersion")
-
-    implementation("io.ktor:ktor-client-content-negotiation:$ktorVersion")
 
     // модули приложения
     implementation(project(":common"))

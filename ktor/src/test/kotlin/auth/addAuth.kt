@@ -6,10 +6,9 @@ import com.crowdproj.rating.ktor.base.KtorAuthConfig
 import io.ktor.client.request.*
 import io.ktor.http.*
 
-//actual fun HttpRequestBuilder.addAuth(
 fun HttpRequestBuilder.addAuth(
-    id: String,
-    groups: List<String>,
+    id: String? = null,
+    groups: List<String>? = null,
     config: KtorAuthConfig
 ) {
     val token = JWT.create()

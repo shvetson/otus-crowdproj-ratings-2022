@@ -1,0 +1,160 @@
+### Token by password
+POST http://localhost:8081/auth/realms/com-crowdproj-rating/protocol/openid-connect/token
+Content-Type: application/x-www-form-urlencoded
+
+client_id=com-crowdproj-rating-service&grant_type=password&username=otus-test&password=otus-pass
+
+> {% client.global.set("auth_token", response.body.access_token);
+client.global.set("refresh_token", response.body.refresh_token); %}
+
+### Token by refresh token
+POST http://localhost:8081/auth/realms/com-crowdproj-rating/protocol/openid-connect/token
+Content-Type: application/x-www-form-urlencoded
+
+client_id=com-crowdproj-rating-service&grant_type=refresh_token&refresh_token={{refresh_token}}
+
+### Create
+POST http://127.0.0.1:8080/api/v1/ratings/create
+Content-Type: application/json
+Authorization: Bearer {{auth_token}}
+
+{
+  "requestType": "create",
+  "requestId": "12345",
+  "rating": {
+    "scoreTypeId": "1",
+    "objectTypeId": "11",
+    "objectId": "111"
+  },
+  "debug": {
+    "mode": "test"
+  }
+}
+
+### Get unexisted ID
+POST http://127.0.0.1:8080/api/v1/ratings/read
+Content-Type: application/json
+Authorization: Bearer {{auth_token}}
+
+{
+  "requestType": "read",
+  "requestId": "12345",
+  "rating": {
+    "id": "99999"
+  },
+  "debug": {
+    "stub": "badId"
+  }
+}
+
+### Read With Existed id
+POST http://127.0.0.1:8080/api/v1/ratings/read
+Content-Type: application/json
+Authorization: Bearer {{auth_token}}
+
+{
+  "requestType": "read",
+  "requestId": "12345",
+  "rating": {
+    "id": "existed"
+  },
+  "debug": {
+    "stub": "success"
+  }
+}
+
+### Update
+POST http://localhost:8080/api/v1/ratings/update
+Content-Type: application/json
+Authorization: Bearer {{auth_token}}
+
+{
+  "requestType": "update",
+  "requestId": "666",
+  "rating": {
+    "id": "updated"
+  },
+  "debug": {
+    "stub": "success"
+  }
+}
+
+### Update with unexistedId
+POST http://localhost:8080/v1/ad/update
+Content-Type: application/json
+Authorization: Bearer {{auth_token}}
+
+{
+  "requestType": "update",
+  "requestId": "666",
+  "ad": {
+    "id": "668"
+  },
+  "debug": {
+    "stub": "badId"
+  }
+}
+
+### Delete existed
+POST http://localhost:8080/api/v1/ratings/delete
+Content-Type: application/json
+Authorization: Bearer {{auth_token}}
+
+{
+  "requestType": "delete",
+  "requestId": "deleteId",
+  "rating": {
+    "id": "existed_id"
+  },
+  "debug": {
+    "stub": "success"
+  }
+}
+
+### Delete non-existed
+POST http://localhost:8080/api/v1/ratings/delete
+Content-Type: application/json
+Authorization: Bearer {{auth_token}}
+
+{
+  "requestType": "delete",
+  "requestId": "deleteId_unknown",
+  "ad": {
+    "id": "unknownId"
+  },
+  "debug": {
+    "stub": "badId"
+  }
+}
+
+### Search by string
+POST http://localhost:8080/api/v1/ratings/search
+Content-Type: application/json
+Authorization: Bearer {{auth_token}}
+
+{
+  "requestType": "search",
+  "requestId": "search_1",
+  "adFilter": {
+    "searchString": "болт"
+  },
+  "debug": {
+    "stub": "success"
+  }
+}
+
+### Search by string with error
+POST http://localhost:8080/api/v1/ratings/search
+Content-Type: application/json
+Authorization: Bearer {{auth_token}}
+
+{
+  "requestType": "search",
+  "requestId": "search_1",
+  "adFilter": {
+    "searchString": "кто тут"
+  },
+  "debug": {
+    "stub": "badSearchString"
+  }
+}

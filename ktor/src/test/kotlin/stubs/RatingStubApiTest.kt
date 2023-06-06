@@ -1,13 +1,15 @@
 package com.crowdproj.rating.ktor.stubs
 
 import com.crowdproj.rating.api.v1.models.*
+import com.crowdproj.rating.ktor.auth.addAuth
+import com.crowdproj.rating.ktor.base.KtorAuthConfig
 import com.fasterxml.jackson.databind.DeserializationFeature
 import com.fasterxml.jackson.databind.SerializationFeature
 import io.ktor.client.call.*
+import io.ktor.client.plugins.contentnegotiation.*
 import io.ktor.client.request.*
 import io.ktor.http.*
 import io.ktor.serialization.jackson.*
-import io.ktor.client.plugins.contentnegotiation.*
 import io.ktor.server.testing.*
 import org.junit.Test
 import kotlin.test.assertEquals
@@ -33,11 +35,17 @@ class RatingStubApiTest {
                 ),
             )
 
+            addAuth(
+                id = "user1",
+                groups = listOf("USER", "TEST"),
+                config = KtorAuthConfig.TEST
+            )
             contentType(ContentType.Application.Json)
             setBody(requestObj)
         }
-        val responseObj = response.body<RatingCreateResponse>()
 
+        val responseObj = response.body<RatingCreateResponse>()
+        println(responseObj)
         assertEquals(200, response.status.value)
         assertEquals("111", responseObj.rating?.id)
     }
@@ -57,6 +65,11 @@ class RatingStubApiTest {
                 rating = RatingReadObject("111"),
             )
 
+            addAuth(
+                id = "user1",
+                groups = listOf("USER", "TEST"),
+                config = KtorAuthConfig.TEST
+            )
             contentType(ContentType.Application.Json)
             setBody(requestObj)
         }
@@ -87,6 +100,11 @@ class RatingStubApiTest {
                 ),
             )
 
+            addAuth(
+                id = "user1",
+                groups = listOf("USER", "TEST"),
+                config = KtorAuthConfig.TEST
+            )
             contentType(ContentType.Application.Json)
             setBody(requestObj)
         }
@@ -111,6 +129,11 @@ class RatingStubApiTest {
                 rating = RatingDeleteObject("111"),
             )
 
+            addAuth(
+                id = "user1",
+                groups = listOf("USER", "TEST"),
+                config = KtorAuthConfig.TEST
+            )
             contentType(ContentType.Application.Json)
             setBody(requestObj)
         }
@@ -135,6 +158,11 @@ class RatingStubApiTest {
                 ratingFilter = RatingSearchFilter(),
             )
 
+            addAuth(
+                id = "user1",
+                groups = listOf("USER", "TEST"),
+                config = KtorAuthConfig.TEST
+            )
             contentType(ContentType.Application.Json)
             setBody(requestObj)
         }
@@ -145,11 +173,9 @@ class RatingStubApiTest {
     }
 
     private fun ApplicationTestBuilder.myClient() = createClient {
-
         install(ContentNegotiation) {
             jackson {
                 disable(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES)
-
                 enable(SerializationFeature.INDENT_OUTPUT)
                 writerWithDefaultPrettyPrinter()
             }
