@@ -15,6 +15,9 @@ fun ICorAddExecDsl<CwpRatingContext>.repoSearch(title: String) = worker {
             scoreTypeId = ratingFilterValidated.scoreTypeId,
             objectTypeId = ratingFilterValidated.objectTypeId,
             ownerId = ratingFilterValidated.ownerId,
+//            scoreTypeId = ratingFilterValidated.scoreTypeId,
+//            objectTypeId = ratingFilterValidated.objectTypeId,
+//            ownerId = ratingFilterValidated.ownerId,
         )
         val result = ratingRepo.searchRating(request)
         val resultRatings = result.data

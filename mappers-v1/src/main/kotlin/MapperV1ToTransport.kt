@@ -26,7 +26,7 @@ fun CwpRatingContext.toTransport(): IResponse = when (command) {
 // #2
 fun CwpRatingContext.toTransportCreate() = RatingCreateResponse(
     requestId = requestId.asString().takeIf { it.isNotBlank() },
-    result = if (state == CwpRatingState.RUNNING) ResponseResult.SUCCESS else ResponseResult.ERROR,
+    result = if (state == CwpRatingState.FINISHING && errors.isEmpty()) ResponseResult.SUCCESS else ResponseResult.ERROR,
     errors = errors.toTransportErrors(),
     rating = ratingResponse.toTransportRating()
 )
@@ -34,7 +34,7 @@ fun CwpRatingContext.toTransportCreate() = RatingCreateResponse(
 // #9
 fun CwpRatingContext.toTransportRead() = RatingReadResponse(
     requestId = requestId.asString().takeIf { it.isNotBlank() },
-    result = if (state == CwpRatingState.RUNNING) ResponseResult.SUCCESS else ResponseResult.ERROR,
+    result = if (state == CwpRatingState.FINISHING && errors.isEmpty()) ResponseResult.SUCCESS else ResponseResult.ERROR,
     errors = errors.toTransportErrors(),
     rating = ratingResponse.toTransportRating()
 )
@@ -42,7 +42,7 @@ fun CwpRatingContext.toTransportRead() = RatingReadResponse(
 // #10
 fun CwpRatingContext.toTransportUpdate() = RatingUpdateResponse(
     requestId = requestId.asString().takeIf { it.isNotBlank() },
-    result = if (state == CwpRatingState.RUNNING) ResponseResult.SUCCESS else ResponseResult.ERROR,
+    result = if (state == CwpRatingState.FINISHING && errors.isEmpty()) ResponseResult.SUCCESS else ResponseResult.ERROR,
     errors = errors.toTransportErrors(),
     rating = ratingResponse.toTransportRating()
 )
@@ -50,7 +50,7 @@ fun CwpRatingContext.toTransportUpdate() = RatingUpdateResponse(
 // #11
 fun CwpRatingContext.toTransportDelete() = RatingDeleteResponse(
     requestId = requestId.asString().takeIf { it.isNotBlank() },
-    result = if (state == CwpRatingState.RUNNING) ResponseResult.SUCCESS else ResponseResult.ERROR,
+    result = if (state == CwpRatingState.FINISHING && errors.isEmpty()) ResponseResult.SUCCESS else ResponseResult.ERROR,
     errors = errors.toTransportErrors(),
     rating = ratingResponse.toTransportRating()
 )
@@ -58,7 +58,7 @@ fun CwpRatingContext.toTransportDelete() = RatingDeleteResponse(
 // #12
 fun CwpRatingContext.toTransportSearch() = RatingSearchResponse(
     requestId = requestId.asString().takeIf { it.isNotBlank() },
-    result = if (state == CwpRatingState.RUNNING) ResponseResult.SUCCESS else ResponseResult.ERROR,
+    result = if (state == CwpRatingState.FINISHING && errors.isEmpty()) ResponseResult.SUCCESS else ResponseResult.ERROR,
     errors = errors.toTransportErrors(),
     ratings = ratingsResponse.toTransportRating()
 )

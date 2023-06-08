@@ -8,7 +8,7 @@ import com.crowdproj.rating.common.repo.DbRatingIdRequest
 
 fun ICorAddExecDsl<CwpRatingContext>.repoRead(title: String) = worker {
     this.title = title
-    description = "Чтение объявления из БД"
+    description = "Чтение рейтинга из БД"
     on { state == CwpRatingState.RUNNING }
     handle {
         val request = DbRatingIdRequest(ratingValidated)

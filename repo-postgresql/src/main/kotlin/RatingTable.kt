@@ -2,14 +2,15 @@ package com.crowdproj.rating.repo.postgresql
 
 import com.crowdproj.rating.common.NONE
 import com.crowdproj.rating.common.model.*
-import kotlinx.datetime.Instant
-import kotlinx.datetime.toJavaInstant
-import kotlinx.datetime.toKotlinInstant
+import kotlinx.datetime.*
 import org.jetbrains.exposed.sql.ResultRow
 import org.jetbrains.exposed.sql.Table
+import org.jetbrains.exposed.sql.javatime.dateTimeParam
+import org.jetbrains.exposed.sql.javatime.datetime
 import org.jetbrains.exposed.sql.javatime.timestamp
 import org.jetbrains.exposed.sql.statements.InsertStatement
 import org.jetbrains.exposed.sql.statements.UpdateBuilder
+import java.sql.Date
 
 /**
  * @author  Oleg Shvets
@@ -24,8 +25,8 @@ object RatingTable : Table(name = "ratings") {
     val objectId = varchar("object_id", 128)
     val score = double("score").nullable()
     val voteCount = integer("vote_count").nullable()
-    val createdAt = timestamp("created_at")
-    val updatedAt = timestamp("updated_at").nullable()
+    val createdAt = datetime("created_at")
+    val updatedAt = datetime("updated_at").nullable()
     val ownerId = varchar("owner_id", 128)
     val lock = varchar("lock", 128)
 
@@ -39,8 +40,8 @@ object RatingTable : Table(name = "ratings") {
             objectId = CwpRatingObjectId(result[objectId].toString()),
             score = result[score] ?: 0.0,
             voteCount = result[voteCount] ?: 0,
-            createdAt = result[createdAt].toKotlinInstant(),
-            updatedAt = result[updatedAt]?.toKotlinInstant() ?: Instant.NONE,
+            createdAt = result[createdAt].toKotlinLocalDateTime().toInstant(TimeZone.currentSystemDefault()),
+            updatedAt = result[updatedAt]?.toKotlinLocalDateTime()?.toInstant(TimeZone.currentSystemDefault()) ?: Instant.NONE,
             ownerId = CwpRatingUserId(result[ownerId].toString()),
             lock = CwpRatingLock(result[lock])
         )
@@ -53,8 +54,8 @@ object RatingTable : Table(name = "ratings") {
             objectId = CwpRatingObjectId(result[objectId].toString()),
             score = result[score] ?: 0.0,
             voteCount = result[voteCount] ?: 0,
-            createdAt = result[createdAt].toKotlinInstant(),
-            updatedAt = result[updatedAt]?.toKotlinInstant() ?: Instant.NONE,
+            createdAt = result[createdAt].toKotlinLocalDateTime().toInstant(TimeZone.currentSystemDefault()),
+            updatedAt = result[updatedAt]?.toKotlinLocalDateTime()?.toInstant(TimeZone.currentSystemDefault()) ?: Instant.NONE,
             ownerId = CwpRatingUserId(result[ownerId].toString()),
             lock = CwpRatingLock(result[lock])
         )
@@ -66,8 +67,8 @@ object RatingTable : Table(name = "ratings") {
         it[objectId] = rating.objectId.asString()
         it[score] = rating.score
         it[voteCount] = rating.voteCount
-        it[createdAt] = rating.createdAt.toJavaInstant()
-        it[updatedAt] = rating.updatedAt.toJavaInstant()
+        it[createdAt] = (rating.createdAt.takeIf { it != Instant.NONE } ?: Clock.System.now()).toLocalDateTime(TimeZone.currentSystemDefault()).toJavaLocalDateTime()
+        it[updatedAt] = (rating.updatedAt.takeIf { it != Instant.NONE } ?: Clock.System.now()).toLocalDateTime(TimeZone.currentSystemDefault()).toJavaLocalDateTime()
         it[ownerId] = rating.ownerId.asString()
         it[lock] = rating.lock.takeIf { it != CwpRatingLock.NONE }?.asString() ?: randomUuid()
     }

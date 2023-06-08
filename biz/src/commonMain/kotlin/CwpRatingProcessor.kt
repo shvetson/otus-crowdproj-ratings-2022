@@ -194,7 +194,7 @@ class CwpRatingProcessor(private val settings: CwpRatingCorSettings = CwpRatingC
                     worker("Копируем поля в ratingFilterValidating") {
                         ratingFilterValidating = ratingFilterRequest.copy()
                     }
-                    finishRatingValidation("Завершение проверок")
+                    finishRatingFilterValidation("Завершение проверок")
                 }
                 chainPermissions("Проверка разрешений для пользователя")
                 searchTypes("Подготовка поискового запроса")

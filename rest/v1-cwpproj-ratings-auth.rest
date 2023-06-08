@@ -20,14 +20,14 @@ Authorization: Bearer {{auth_token}}
 
 {
   "requestType": "create",
-  "requestId": "12345",
+  "requestId": "create",
   "rating": {
     "scoreTypeId": "1",
     "objectTypeId": "11",
     "objectId": "111"
   },
   "debug": {
-    "mode": "test"
+    "stub": "success"
   }
 }
 
@@ -38,7 +38,7 @@ Authorization: Bearer {{auth_token}}
 
 {
   "requestType": "read",
-  "requestId": "12345",
+  "requestId": "readId_unknown",
   "rating": {
     "id": "99999"
   },
@@ -54,9 +54,9 @@ Authorization: Bearer {{auth_token}}
 
 {
   "requestType": "read",
-  "requestId": "12345",
+  "requestId": "readId",
   "rating": {
-    "id": "existed"
+    "id": "123"
   },
   "debug": {
     "stub": "success"
@@ -70,9 +70,12 @@ Authorization: Bearer {{auth_token}}
 
 {
   "requestType": "update",
-  "requestId": "666",
+  "requestId": "updateId",
   "rating": {
-    "id": "updated"
+    "id": "123",
+    "scoreTypeId": "2",
+    "objectTypeId": "22",
+    "objectId": "222"
   },
   "debug": {
     "stub": "success"
@@ -80,15 +83,18 @@ Authorization: Bearer {{auth_token}}
 }
 
 ### Update with unexistedId
-POST http://localhost:8080/v1/ad/update
+POST http://localhost:8080/api/v1/ratings/update
 Content-Type: application/json
 Authorization: Bearer {{auth_token}}
 
 {
   "requestType": "update",
-  "requestId": "666",
-  "ad": {
-    "id": "668"
+  "requestId": "updateId_unknown",
+  "rating": {
+    "id": "99999",
+    "scoreTypeId": "3",
+    "objectTypeId": "33",
+    "objectId": "333"
   },
   "debug": {
     "stub": "badId"
@@ -104,7 +110,7 @@ Authorization: Bearer {{auth_token}}
   "requestType": "delete",
   "requestId": "deleteId",
   "rating": {
-    "id": "existed_id"
+    "id": "123"
   },
   "debug": {
     "stub": "success"
@@ -119,8 +125,8 @@ Authorization: Bearer {{auth_token}}
 {
   "requestType": "delete",
   "requestId": "deleteId_unknown",
-  "ad": {
-    "id": "unknownId"
+  "rating": {
+    "id": "99999"
   },
   "debug": {
     "stub": "badId"
@@ -134,9 +140,9 @@ Authorization: Bearer {{auth_token}}
 
 {
   "requestType": "search",
-  "requestId": "search_1",
-  "adFilter": {
-    "searchString": "болт"
+  "requestId": "search",
+  "ratingFilter": {
+    "searchString": "11"
   },
   "debug": {
     "stub": "success"
@@ -150,7 +156,7 @@ Authorization: Bearer {{auth_token}}
 
 {
   "requestType": "search",
-  "requestId": "search_1",
+  "requestId": "search",
   "adFilter": {
     "searchString": "кто тут"
   },
