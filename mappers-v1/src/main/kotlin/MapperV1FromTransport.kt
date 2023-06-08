@@ -69,7 +69,10 @@ fun RatingUpdateObject.toInternal() = CwpRating(
 
 // #15
 fun RatingSearchFilter?.toInternal() = CwpRatingFilter(
-    searchString = this?.searchString ?: ""
+//    searchString = this?.searchString ?: ""
+    scoreTypeId = this?.scoreTypeId.toScoreTypeId(),
+    objectTypeId = this?.objectTypeId.toObjectTypeId(),
+    objectId = this?.objectId.toObjectId()
 )
 
 // #2

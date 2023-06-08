@@ -320,9 +320,12 @@ components:
       type: object
       description: A list of filters to search
       properties:
-        searchString:
-          type: string
-          description: A search string that will be searched for in ratings
+        scoreTypeId:
+          $ref: '#/components/schemas/ScoreTypeId'
+        objectId:
+          $ref: '#/components/schemas/ObjectId'
+        objectTypeId:
+          $ref: '#/components/schemas/ObjectTypeId'
 
     RatingSearchRequest: # Can be referenced as '#/components/schemas/RatingSearchRequest'
       allOf:

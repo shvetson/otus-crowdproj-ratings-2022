@@ -142,25 +142,11 @@ Authorization: Bearer {{auth_token}}
   "requestType": "search",
   "requestId": "search",
   "ratingFilter": {
-    "searchString": "11"
+    "scoreTypeId": "",
+    "objectTypeId": "",
+    "objectId": ""
   },
   "debug": {
     "stub": "success"
-  }
-}
-
-### Search by string with error
-POST http://localhost:8080/api/v1/ratings/search
-Content-Type: application/json
-Authorization: Bearer {{auth_token}}
-
-{
-  "requestType": "search",
-  "requestId": "search",
-  "adFilter": {
-    "searchString": "кто тут"
-  },
-  "debug": {
-    "stub": "badSearchString"
   }
 }
