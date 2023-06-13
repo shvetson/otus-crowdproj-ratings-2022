@@ -71,3 +71,6 @@ include("repo-stubs")
 include("repo-cassandra")
 include("repo-gremlin")
 
+include("auth")
+
+

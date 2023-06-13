@@ -7,6 +7,7 @@ import com.crowdproj.rating.common.helper.asCwpRatingError
 import com.crowdproj.rating.common.model.CwpRatingCommand
 import com.crowdproj.rating.common.model.CwpRatingState
 import com.crowdproj.rating.ktor.CwpRatingAppSettings
+import com.crowdproj.rating.ktor.base.toModel
 import com.crowdproj.rating.logging.common.ICwpLogWrapper
 import com.crowdproj.rating.mappers.fromTransport
 import com.crowdproj.rating.mappers.log.toLog
@@ -14,6 +15,8 @@ import com.crowdproj.rating.mappers.toTransport
 import io.ktor.server.application.*
 import io.ktor.server.request.*
 import io.ktor.server.response.*
+import io.ktor.server.auth.*
+import io.ktor.server.auth.jwt.*
 import kotlinx.datetime.Clock
 
 suspend inline fun <reified Q : IRequest, @Suppress("unused") reified R : IResponse> ApplicationCall.processV1(
@@ -27,6 +30,7 @@ suspend inline fun <reified Q : IRequest, @Suppress("unused") reified R : IRespo
 
     try {
         logger.doWithLogging(id = logId) {
+            ctx.principal = principal<JWTPrincipal>().toModel()
             val request = receive<Q>()
             ctx.fromTransport(request)
             logger.info(

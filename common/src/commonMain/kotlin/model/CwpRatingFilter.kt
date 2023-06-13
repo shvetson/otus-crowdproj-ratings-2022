@@ -7,9 +7,9 @@ package com.crowdproj.rating.common.model
  */
 
 data class CwpRatingFilter(
-    var searchString: String = "",
     var scoreTypeId: CwpRatingScoreTypeId = CwpRatingScoreTypeId.NONE,
     var objectTypeId: CwpRatingObjectTypeId = CwpRatingObjectTypeId.NONE,
     var objectId: CwpRatingObjectId = CwpRatingObjectId.NONE,
     var ownerId: CwpRatingUserId = CwpRatingUserId.NONE,
+    var searchPermissions: MutableSet<CwpRatingSearchPermissions> = mutableSetOf(),
 )

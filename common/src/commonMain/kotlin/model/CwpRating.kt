@@ -1,6 +1,7 @@
 package com.crowdproj.rating.common.model
 
 import com.crowdproj.rating.common.NONE
+import com.crowdproj.rating.common.permission.CwpRatingPrincipalRelations
 import kotlinx.datetime.Instant
 
 /**
@@ -20,10 +21,15 @@ data class CwpRating(
     var createdAt: Instant = Instant.NONE,
     var updatedAt: Instant = Instant.NONE,
     var ownerId: CwpRatingUserId = CwpRatingUserId.NONE,
+    var visibility: CwpRatingVisibility = CwpRatingVisibility.NONE,
     var lock: CwpRatingLock = CwpRatingLock.NONE,
-    var permissions: MutableList<CwpRatingPermission> = mutableListOf(),
+    var principalRelations: Set<CwpRatingPrincipalRelations> = emptySet(),
+    var permissionsClient: MutableSet<CwpRatingPermission> = mutableSetOf(),
 ) {
-    fun deepCopy(): CwpRating = copy(permissions = permissions.toMutableList(),)
+    fun deepCopy(): CwpRating = copy(
+        principalRelations = principalRelations.toSet(),
+        permissionsClient = permissionsClient.toMutableSet(),
+    )
     fun isEmpty() = this == NONE
 
     companion object {

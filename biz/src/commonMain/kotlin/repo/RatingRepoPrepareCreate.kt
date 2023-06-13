@@ -11,6 +11,7 @@ fun ICorAddExecDsl<CwpRatingContext>.repoPrepareCreate(title: String) = worker {
     on { state == CwpRatingState.RUNNING }
     handle {
         ratingRepoRead = ratingValidated.deepCopy()
+        ratingRepoRead.ownerId = principal.id
         ratingRepoPrepare = ratingRepoRead
     }
 }

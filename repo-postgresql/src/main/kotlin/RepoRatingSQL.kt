@@ -35,7 +35,7 @@ class RepoRatingSQL(
         )
 
         transaction {
-//            SchemaUtils.drop(RatingTable)
+            SchemaUtils.drop(RatingTable)
             SchemaUtils.create(RatingTable)
         }
     }

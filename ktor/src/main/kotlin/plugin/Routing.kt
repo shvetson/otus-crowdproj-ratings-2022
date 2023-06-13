@@ -4,6 +4,7 @@ import com.crowdproj.rating.ktor.CwpRatingAppSettings
 import com.crowdproj.rating.ktor.controller.rating
 import io.ktor.server.routing.*
 import io.ktor.server.application.*
+import io.ktor.server.auth.*
 import io.ktor.server.http.content.*
 
 fun Application.configureRouting(appSettings: CwpRatingAppSettings) {
@@ -11,8 +12,10 @@ fun Application.configureRouting(appSettings: CwpRatingAppSettings) {
         static("static") {
             resources("static")
         }
-//        swagger(appSettings)
+        swagger(appSettings)
 
-        rating(appSettings)
+        authenticate("auth-jwt") {
+            rating(appSettings)
+        }
     }
 }

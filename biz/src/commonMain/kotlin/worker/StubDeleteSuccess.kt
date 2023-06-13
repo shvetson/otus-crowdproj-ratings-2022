@@ -3,7 +3,7 @@ package com.crowdproj.rating.biz.worker
 import com.crowdproj.kotlin.cor.ICorAddExecDsl
 import com.crowdproj.kotlin.cor.handlers.worker
 import com.crowdproj.rating.common.CwpRatingContext
-import com.crowdproj.rating.common.model.CwpRatingScoreTypeId
+import com.crowdproj.rating.common.model.CwpRatingId
 import com.crowdproj.rating.common.model.CwpRatingState
 import com.crowdproj.rating.common.stub.CwpRatingStubs
 import com.crowdproj.rating.stubs.CwpRatingStub
@@ -14,7 +14,7 @@ fun ICorAddExecDsl<CwpRatingContext>.stubDeleteSuccess(title: String) = worker {
     handle {
         state = CwpRatingState.FINISHING
         val stub = CwpRatingStub.prepareResult {
-            ratingRequest.scoreTypeId.takeIf { it != CwpRatingScoreTypeId.NONE }?.also { this.scoreTypeId = it }
+            ratingRequest.id.takeIf { it != CwpRatingId.NONE }?.also { this.id = it }
         }
         ratingResponse = stub
     }

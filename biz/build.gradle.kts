@@ -25,7 +25,7 @@ kotlin {
 //                implementation(project(":lib-cor"))
 //                implementation(project(":repo-in-memory"))
                 implementation(project(":lib-logging-common"))
-
+                implementation(project(":auth"))
             }
         }
         @Suppress("UNUSED_VARIABLE")

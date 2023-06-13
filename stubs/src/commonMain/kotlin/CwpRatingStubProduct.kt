@@ -1,6 +1,5 @@
 package com.crowdproj.rating.stubs
 
-import com.crowdproj.rating.common.NONE
 import com.crowdproj.rating.common.model.*
 import kotlinx.datetime.Instant
 
@@ -16,7 +15,7 @@ object CwpRatingStubProduct {
             createdAt = Instant.parse("2010-06-01T22:19:44.475Z"),
             updatedAt = Instant.parse("2010-07-05T12:11:40.475Z"),
             ownerId = CwpRatingUserId("1"),
-            permissions = mutableListOf(
+            permissionsClient = mutableSetOf(
                 CwpRatingPermission.READ,
                 CwpRatingPermission.UPDATE,
                 CwpRatingPermission.DELETE,

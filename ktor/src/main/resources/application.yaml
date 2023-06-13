@@ -15,7 +15,7 @@ ktor:
 rating:
   repository:
     test: "$DB_TYPE_TEST:inmemory"
-    prod: "$DB_TYPE_PROD:cassandra"
+    prod: "$DB_TYPE_PROD:psql"
     cassandra:
       hosts: localhost
       keyspace: rating
@@ -33,3 +33,17 @@ rating:
       password: "$DB_GREMLIN_HOST:root_root"
       port: "$DB_GREMLIN_PORT:8182"
       enableSsl: false
+
+#jwt:
+#  secret: "secret"
+#  issuer: "com-crowdproj-rating"
+#  audience: "rating-users"
+#  realm: "com-crowdproj-rating"
+#  clientId: "com-crowdproj-rating-service"
+
+jwt:
+  issuer: "http://localhost:8081/auth/realms/com-crowdproj-rating"
+  audience: "rating-users"
+  realm: "com-crowdproj-rating"
+  clientId: "com-crowdproj-rating-service"
+  certUrl: "http://localhost:8081/auth/realms/com-crowdproj-rating/protocol/openid-connect/certs"

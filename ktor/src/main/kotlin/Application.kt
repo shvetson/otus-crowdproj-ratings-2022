@@ -1,9 +1,6 @@
 package com.crowdproj.rating.ktor
 
-import com.crowdproj.rating.ktor.plugin.configureCallLogging
-import com.crowdproj.rating.ktor.plugin.configureRouting
-import com.crowdproj.rating.ktor.plugin.configureSerialization
-import com.crowdproj.rating.ktor.plugin.initAppSettings
+import com.crowdproj.rating.ktor.plugin.*
 import io.ktor.http.*
 import io.ktor.server.application.*
 import io.ktor.server.http.content.*
@@ -22,6 +19,7 @@ private val clazz = Application::module::class.qualifiedName ?: "Application"
 @Suppress("unused")
 fun Application.module(appSettings: CwpRatingAppSettings = initAppSettings()) {
     configureSerialization()
+    configureAuth(appSettings)
     configureRouting(appSettings)
     configureCallLogging(appSettings, clazz)
 }

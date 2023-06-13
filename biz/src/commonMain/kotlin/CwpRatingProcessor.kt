@@ -4,6 +4,10 @@ import com.crowdproj.kotlin.cor.handlers.chain
 import com.crowdproj.kotlin.cor.handlers.worker
 import com.crowdproj.kotlin.cor.rootChain
 import com.crowdproj.rating.biz.general.*
+import com.crowdproj.rating.biz.permission.accessValidation
+import com.crowdproj.rating.biz.permission.chainPermissions
+import com.crowdproj.rating.biz.permission.frontPermissions
+import com.crowdproj.rating.biz.permission.searchTypes
 import com.crowdproj.rating.biz.repo.*
 import com.crowdproj.rating.biz.validation.*
 import com.crowdproj.rating.biz.worker.*
@@ -54,11 +58,14 @@ class CwpRatingProcessor(private val settings: CwpRatingCorSettings = CwpRatingC
 
                     finishRatingValidation("Завершение проверок")
                 }
+                chainPermissions("Проверка разрешений для пользователя")
                 chain {
                     title = "Логика сохранения"
                     repoPrepareCreate("Подготовка объекта для сохранения")
+                    accessValidation("Проверка прав доступа")
                     repoCreate("Создание рейтинга в БД")
                 }
+                frontPermissions("Вычисление пользовательских разрешений для фронтенда") // удобно для работы с UI приложения
                 prepareResult("Подготовка ответа")
             }
 
@@ -80,15 +87,18 @@ class CwpRatingProcessor(private val settings: CwpRatingCorSettings = CwpRatingC
 
                     finishRatingValidation("Завершение проверок")
                 }
+                chainPermissions("Проверка разрешений для пользователя")
                 chain {
                     title = "Логика чтения"
                     repoRead("Чтение рейтинга в БД")
+                    accessValidation("Проверка прав доступа")
                     worker {
                         title = "Подготовка ответа на Read"
                         on { state == CwpRatingState.RUNNING }
                         handle { ratingRepoDone = ratingRepoRead }
                     }
                 }
+                frontPermissions("Вычисление пользовательских разрешений для фронтенда")
                 prepareResult("Подготовка ответа")
             }
 
@@ -131,12 +141,15 @@ class CwpRatingProcessor(private val settings: CwpRatingCorSettings = CwpRatingC
 
                     finishRatingValidation("Завершение проверок")
                 }
+                chainPermissions("Проверка разрешений для пользователя")
                 chain {
                     title = "Логика сохранения"
                     repoRead("Чтение рейтинга из БД")
+                    accessValidation("Проверка прав доступа")
                     repoPrepareUpdate("Подготовка объекта для обновления")
                     repoUpdate("Обновление рейтинга в БД")
                 }
+                frontPermissions("Вычисление пользовательских разрешений для фронтенда")
                 prepareResult("Подготовка ответа")
             }
 
@@ -158,12 +171,15 @@ class CwpRatingProcessor(private val settings: CwpRatingCorSettings = CwpRatingC
 
                     finishRatingValidation("Завершение проверок")
                 }
+                chainPermissions("Проверка разрешений для пользователя")
                 chain {
                     title = "Логика удаления"
                     repoRead("Чтение рейтинга из БД")
+                    accessValidation("Проверка прав доступа")
                     repoPrepareDelete("Подготовка объекта для удаления")
                     repoDelete("Удаление рейтинга в БД")
                 }
+                frontPermissions("Вычисление пользовательских разрешений для фронтенда")
                 prepareResult("Подготовка ответа")
             }
 
@@ -178,9 +194,12 @@ class CwpRatingProcessor(private val settings: CwpRatingCorSettings = CwpRatingC
                     worker("Копируем поля в ratingFilterValidating") {
                         ratingFilterValidating = ratingFilterRequest.copy()
                     }
-                    finishRatingValidation("Завершение проверок")
+                    finishRatingFilterValidation("Завершение проверок")
                 }
+                chainPermissions("Проверка разрешений для пользователя")
+                searchTypes("Подготовка поискового запроса")
                 repoSearch("Поиск рейтинга в БД по фильтру")
+                frontPermissions("Вычисление пользовательских разрешений для фронтенда")
                 prepareResult("Подготовка ответа")
             }
         }.build()

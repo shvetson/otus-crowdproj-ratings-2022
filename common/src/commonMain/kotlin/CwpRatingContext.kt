@@ -1,8 +1,10 @@
 package com.crowdproj.rating.common
 
 import com.crowdproj.rating.common.model.*
-import com.crowdproj.rating.common.stub.CwpRatingStubs
+import com.crowdproj.rating.common.permission.CwpRatingPrincipalModel
+import com.crowdproj.rating.common.permission.CwpRatingUserPermissions
 import com.crowdproj.rating.common.repo.IRatingRepository
+import com.crowdproj.rating.common.stub.CwpRatingStubs
 import kotlinx.datetime.Instant
 
 /**
@@ -19,6 +21,10 @@ data class CwpRatingContext(
 
     var workMode: CwpRatingWorkMode = CwpRatingWorkMode.STUB,
     var stubCase: CwpRatingStubs = CwpRatingStubs.NONE,
+
+    var principal: CwpRatingPrincipalModel = CwpRatingPrincipalModel.NONE,
+    val permissionsChain: MutableSet<CwpRatingUserPermissions> = mutableSetOf(),
+    var permitted: Boolean = false,
 
     var requestId: CwpRatingRequestId = CwpRatingRequestId.NONE,
     var timeStart: Instant = Instant.NONE,
